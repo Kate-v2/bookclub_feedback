@@ -13,6 +13,13 @@ describe 'Book Index' do
     @author1.books << @book2
 
     @author2.books << @book1
+
+    @user1 = User.create(name: "User 1")
+    @user2 = User.create(name: "User 2")
+
+    @review1 = Review.create(title: "Review 1", score: 1, book_id: @book1.id, user_id: @user1.id)
+    @review2 = Review.create(title: "Review 2", score: 2, book_id: @book1.id, user_id: @user2.id)
+    @review3 = Review.create(title: "Review 3", score: 3, book_id: @book2.id, user_id: @user2.id)
   end
 
 
@@ -52,6 +59,7 @@ describe 'Book Index' do
         card = page.all('.book').first
         card.should have_content("Author 1")
         card.should have_content("Author 2")
+        card.should have_content("Author 1, Author 2")
       end
     end
 

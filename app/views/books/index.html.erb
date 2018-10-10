@@ -5,11 +5,13 @@
     <span class="book" id=<%="book-#{book.id}"%>>
       <h3><%= book.title %></h3>
       <p><%= book.year %></p>
-      <!-- TO DO we probably want these to be comma separated
-           and as a single string -->
-        <% book.authors.each do |author| %>
+        <% book.authors.each.with_index do |author, index| %>
           <span class="author">
-            <%= author.name %>
+            <%= if index < book.authors.count-1
+                  author.name + ", "
+                else
+                  author.name
+                end %>
           </span>
         <% end %>
       </p>
