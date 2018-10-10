@@ -27,6 +27,16 @@ describe Review, type: :model do
       expect(book.reviews.count).to eq(1)
     end
 
+    it 'should create multiple reviews through a book' do
+      book = Book.create(title: "Title 1", pages: 100,  year: 2000 )
+      book.reviews.create(title: "Review 1", description: "description 1", score: 3)
+      book.reviews.create(title: "Review 2", description: "description 2", score: 2)
+      review1 = book.reviews.first
+      review2 = book.reviews.last
+      expect(review1.title).to eq("Review 1")
+      expect(review2.title).to eq("Review 2")
+      expect(book.reviews.count).to eq(2)
+    end
 
 
   end
