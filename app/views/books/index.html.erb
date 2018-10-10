@@ -2,9 +2,11 @@
 
 <div id="books">
   <% @books.each do |book| %>
-    <span class="book" id=<%="book-#{book.id}">
+    <span class="book" id=<%="book-#{book.id}"%>>
       <h3><%= book.title %></h3>
       <p><%= book.year %></p>
+      <!-- TO DO we probably want these to be comma separated
+           and as a single string -->
         <% book.authors.each do |author| %>
           <span class="author">
             <%= author.name %>
