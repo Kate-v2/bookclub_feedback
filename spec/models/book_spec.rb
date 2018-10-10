@@ -11,7 +11,7 @@ describe Book, type: :model do
 
   describe 'Relationships' do
     # -- These models don't exist yet --
-    # it { should have_many :reviews }
+    it { should have_many :reviews }
     # it { should have_many(:authors).through(:book_authors) }
   end
 
