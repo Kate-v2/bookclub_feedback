@@ -10,9 +10,9 @@ describe Book, type: :model do
   end
 
   describe 'Relationships' do
-    # -- These models don't exist yet --
     it { should have_many :reviews }
-    # it { should have_many(:authors).through(:book_authors) }
+    it { should have_many(:book_authors)}
+    it { should have_many(:authors).through(:book_authors) }
   end
 
   describe 'Creation' do
@@ -23,7 +23,6 @@ describe Book, type: :model do
       expect(book.title).to eq("Title 1")
       expect(book.pages).to eq(100)
       expect(book.year).to eq(2000)
-
     end
 
   end
