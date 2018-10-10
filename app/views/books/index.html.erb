@@ -5,12 +5,12 @@
     <span class="book" id=<%="book-#{book.id}">
       <h3><%= book.title %></h3>
       <p><%= book.year %></p>
-        <%
-        authors = []
-        book.authors.each { |author| authors << author.name }
-        string = authors.join(" ")
-        %>
-      <p><%= string %></p>
+        <% book.authors.each do |author| %>
+          <span class="author">
+            <%= author.name %>
+          </span>
+        <% end %>
+      </p>
       <p>Pages: <%= book.pages %></p>
     </span>
   <% end %>
