@@ -75,7 +75,7 @@ What does each group member hope to get out of this project?
 - see above
 
 *Tools:*
-- google slides (wireframes)
+- google slides (wireframes) - https://docs.google.com/presentation/d/1PlBcHAP8BDEHP-vHJLXy9vpQhohpdTU95LVPM4GYbRE/edit?usp=sharing
 - http://ondras.zarovi.cz/sql/demo/ (table relations)
 - Waffle.io (project management)
 
