@@ -50,16 +50,21 @@ describe Book, type: :model do
 
   describe 'Math' do
 
-    it 'should be able to average the ratings of a single book' do
+    it 'can count all of the reviews for a book instance' do
+      ct = @book1.count_ratings
+      expect(ct).to eq(2)
+    end
+
+    it 'can average the ratings of a single book' do
       av = @book1.average_rating
       expected = 1.5
       expect(av).to eq(expected)
     end
 
-    it 'should be able to average all rating' do
+    it 'can average all ratings' do
       books = Book.sort_by_average_rating
       # @book1.average_rating
-      # binding.pry
+      binding.pry
       # book = @book1.average_rating
     end
 
