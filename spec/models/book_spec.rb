@@ -30,9 +30,6 @@ describe Book, type: :model do
     @user1 = User.create(name: "User 1")
     @user2 = User.create(name: "User 2")
 
-    # @book3 = Book.create(title: "Title 3", year: 2003, pages: 300 )
-    # @book3.reviews.create(title: "Review 1", score: 1, user_id: @user1.id)
-
     @review1 = Review.create(title: "Review 1", score: 1, description: "text 1", book_id: @book1.id, user_id: @user1.id)
     @review2 = Review.create(title: "Review 2", score: 2, description: "text 2", book_id: @book1.id, user_id: @user2.id)
     @review3 = Review.create(title: "Review 3", score: 3, description: "text 3", book_id: @book2.id, user_id: @user2.id)
@@ -53,13 +50,17 @@ describe Book, type: :model do
 
   describe 'Math' do
 
+    it 'should be able to average the ratings of a single book' do
+      av = @book1.average_rating
+      expected = 1.5
+      expect(av).to eq(expected)
+    end
+
     it 'should be able to average all rating' do
       books = Book.sort_by_average_rating
       # @book1.average_rating
-      binding.pry
+      # binding.pry
       # book = @book1.average_rating
-
-
     end
 
   end
