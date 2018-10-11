@@ -46,6 +46,26 @@ describe Book, type: :model do
       expect(count).to eq(2)
     end
 
+    describe 'it should be able to make a new book from params' do
+
+      it 'pairs with an existing author' do
+        params = {}
+        params[:title]   = "Title 3"
+        params[:year]    = 2003
+        params[:pages]   = 300
+        params[:authors] = @author1.name
+        expect(params.count).to eq(4)
+
+        book3 = Book.make_new_book(params)
+
+        expect(book3)
+        expect(Book.find(book3.id))
+
+
+      end
+
+    end
+
   end
 
   describe 'Math' do
@@ -64,7 +84,7 @@ describe Book, type: :model do
     it 'can average all ratings' do
       books = Book.sort_by_average_rating
       # @book1.average_rating
-      # binding.pry
+      binding.pry
       # book = @book1.average_rating
     end
 
