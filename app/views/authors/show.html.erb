@@ -2,7 +2,8 @@
   <% @author.books.each do |book| %>
     <li>Published Work: <%= book.title %></li>
              <li>Pages: <%= book.pages %> </li>
+
       <li>Great Review: <%= @review.title %> </li>
       <li>Rating: <%= @review.score %> </li>
-      <li>User: <%= @review.name %> 
+      <li>User: <%= @review.user.name %>
   <% end %>

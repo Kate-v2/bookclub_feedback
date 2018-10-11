@@ -2,8 +2,7 @@ class AuthorsController < ApplicationController
 
   def show
     @author = Author.find(params[:id])
-    @review = Author.great_review
-    binding.pry
+    @review = @author.reviews.order("score DESC").first
   end
 
 end
