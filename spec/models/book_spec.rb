@@ -278,18 +278,45 @@ describe Book, type: :model do
         params[:user_id] = user3.id
         review3 = Review.create(params)
 
-        # books = Book.with_average_rating
-        # # binding.pry
-        # first = books.first.average_score.to_f
-        # last  = books.last.average_score.to_f
-        # expect(first).to eq(1.5)
-        # expect(last).to  eq(1.0)
+        first = Book.first
+        last  = Book.last
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
 
-        sorted = Book.sort_by_average_rating
-        first  = sorted.first.average_score.to_f
-        last   = sorted.last.average_score.to_f
-        expect(first).to eq(1.0)
-        expect(last).to  eq(3.0)
+        sorted = Book.lowest_rating_first
+        first       = sorted.first
+        first_score = first.average_score.to_f
+        last        = sorted.last
+        last_score  = last.average_score.to_f
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 2")
+        expect(first_score).to eq(1.0)
+        expect(last_score).to  eq(3.0)
+      end
+
+      it 'Descending' do
+        book3 = Book.create(@quick_book) #doesn't need an author to instantiate
+        user3 = User.create(@quick_user)
+        params = @quick_review
+        params[:score]   = 1
+        params[:book_id] = book3.id
+        params[:user_id] = user3.id
+        review3 = Review.create(params)
+
+        first = Book.first
+        last  = Book.last
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
+
+        sorted = Book.highest_rating_first
+        last       = sorted.last
+        last_score = last.average_score.to_f
+        first      = sorted.first
+        first_score  = first.average_score.to_f
+        expect(last.title).to   eq("Title 3")
+        expect(first.title).to  eq("Title 2")
+        expect(last_score).to   eq(1.0)
+        expect(first_score).to  eq(3.0)
       end
 
 
