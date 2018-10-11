@@ -34,7 +34,6 @@ describe 'Book Index' do
     it 'Title is present' do
       visit '/books'
       card = page.all('.book').first
-      save_and_open_page
       card.should have_content("Title 1")
       card.should_not have_content("Title 2")
     end
@@ -87,7 +86,6 @@ describe 'Book Index' do
       card2.should have_content("1 reader reviews")
       card2.should_not have_content("2 reader reviews")
     end
-
 
   end
 end
