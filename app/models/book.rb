@@ -13,15 +13,21 @@ class Book < ApplicationRecord
   # --- Creation ---
 
   def self.make_new_book(params)
-    title = params[:title].titleize
-    pages = params[:pages]
-    year  = params[:year]
+    title   = params[:title].titleize
+    pages   = params[:pages]
+    year    = params[:year]
+    authors = params[:authors]
     book = Book.create(title: title, pages: pages, year: year)
-    authors = assess_authors(params[:authors])
-    authors.each { |name| find_and_add_author(name, book) }
+    manage_authors(authors, book)
     return book
   end
 
+  def self.manage_authors(csv, book)
+    authors = assess_authors(csv)
+    authors.each { |name| find_and_add_author(name, book) }
+  end
+
+  # Can't handle mixed type CSV
   def self.assess_authors(csv)
     case1 = ","; case2 = ", "
     return [csv] if !csv.include?(case1)
