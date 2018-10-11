@@ -278,12 +278,13 @@ describe Book, type: :model do
         params[:user_id] = user3.id
         review3 = Review.create(params)
 
-        first = Book.first
-        last  = Book.last
+        books = Book.books_with_ratings
+        first = books.first
+        last  = books.last
         expect(first.title).to eq("Title 1")
         expect(last.title).to  eq("Title 3")
 
-        sorted = Book.lowest_rating_first
+        sorted = Book.lowest_rating_first(books)
         first       = sorted.first
         first_score = first.average_score.to_f
         last        = sorted.last
@@ -303,19 +304,24 @@ describe Book, type: :model do
         params[:user_id] = user3.id
         review3 = Review.create(params)
 
-        first = Book.first
-        last  = Book.last
+        books = Book.books_with_ratings
+        first = books.first
+        first_score  = first.average_score.to_f
+        last  = books.last
+        last_score = last.average_score.to_f
         expect(first.title).to eq("Title 1")
+        expect(first_score).to eq(1.5)
         expect(last.title).to  eq("Title 3")
+        expect(last_score).to  eq(1)
 
-        sorted = Book.highest_rating_first
+        sorted = Book.highest_rating_first(books)
         last       = sorted.last
         last_score = last.average_score.to_f
         first      = sorted.first
         first_score  = first.average_score.to_f
         expect(last.title).to   eq("Title 3")
-        expect(first.title).to  eq("Title 2")
         expect(last_score).to   eq(1.0)
+        expect(first.title).to  eq("Title 2")
         expect(first_score).to  eq(3.0)
       end
 
