@@ -175,7 +175,7 @@ describe Book, type: :model do
             expect(found.authors.last.name).to  eq(new2)
           end
 
-          it 'pairs with multiple mixed exising or new authors' do
+          it 'pairs with multiple mixed existing or new authors' do
             existing = @author1.name; new1 = "Author 3"
             params = @quick_book.dup
             params[:authors] = existing + ',' + new1
