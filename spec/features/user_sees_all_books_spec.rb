@@ -64,12 +64,28 @@ describe 'Book Index' do
       end
     end
 
-    # TO DO - when averaging method is set up
     it 'Rating is present' do
+      visit '/books'
+
+      card1 = page.all('.book').first
+      card1.should have_content("1.5 rating")
+      card1.should_not have_content("3.0 rating")
+
+      card2 = page.all('.book').last
+      card2.should have_content("3.0 rating")
+      card2.should_not have_content("1.5 rating")
     end
 
-    # TO DO - when counting method is set up
     it 'Review Count is present' do
+      visit '/books'
+
+      card1 = page.all('.book').first
+      card1.should have_content("2 reader reviews")
+      card1.should_not have_content("1 reader reviews")
+
+      card2 = page.all('.book').last
+      card2.should have_content("1 reader reviews")
+      card2.should_not have_content("2 reader reviews")
     end
 
 
