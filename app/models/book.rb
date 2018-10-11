@@ -69,25 +69,18 @@ class Book < ApplicationRecord
     order(:title)
   end
 
+  # TO DO - TEST ME specifically -- sufficiently proven via sorts though
   def self.books_with_ratings(books = Book.all)
     books.select('books.*, avg(reviews.score) AS average_score')
     .joins(:reviews)
     .group(:book_id, :id)
   end
 
-  # def self.lowest_rating_first(books = Book.all)
   def self.lowest_rating_first(books)
-    # books.select('books.*, avg(reviews.score) AS average_score')
-    # .joins(:reviews)
-    # .group(:book_id, :id)
     books.order('avg(reviews.score)')
   end
 
-  # def self.highest_rating_first(books = Book.all)
   def self.highest_rating_first(books)
-    # books.select('books.*, avg(reviews.score) AS average_score')
-    # .joins(:reviews)
-    # .group(:book_id, :id)
     books.order('avg(reviews.score) DESC')
   end
 
