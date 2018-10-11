@@ -278,12 +278,12 @@ describe Book, type: :model do
         params[:user_id] = user3.id
         review3 = Review.create(params)
 
-        binding.pry
-        books = Book.all
-        first = Book.first.average_score.to_f
-        last  = Book.last.average_score.to_f
-        expect(first).to eq(1.5)
-        expect(last).to  eq(1.0)
+        # books = Book.with_average_rating
+        # # binding.pry
+        # first = books.first.average_score.to_f
+        # last  = books.last.average_score.to_f
+        # expect(first).to eq(1.5)
+        # expect(last).to  eq(1.0)
 
         sorted = Book.sort_by_average_rating
         first  = sorted.first.average_score.to_f
