@@ -98,22 +98,59 @@ describe Book, type: :model do
       end
 
       it 'pairs with multiple new authors' do
+        new1 = "Author 3"; new2 = "Author 4"
+        params = {}
+        params[:title]   = "Title 3"
+        params[:year]    = 2003
+        params[:pages]   = 300
+        params[:authors] = new1 + ',' + new2
+        expect(params.count).to eq(4)
 
+        book3 = Book.make_new_book(params)
+        expect(book3)
 
+        found = Book.find(book3.id)
+        expect(found)
+        expect(found.authors.first.name).to eq(new1)
+        expect(found.authors.last.name).to  eq(new2)
       end
 
-
       it 'pairs with multiple mixed exising or new authors' do
+        existing = @author1.name; new1 = "Author 3"
+        params = {}
+        params[:title]   = "Title 3"
+        params[:year]    = 2003
+        params[:pages]   = 300
+        params[:authors] = existing + ',' + new1
+        expect(params.count).to eq(4)
 
+        book3 = Book.make_new_book(params)
+        expect(book3)
+
+        found = Book.find(book3.id)
+        expect(found)
+        expect(found.authors.first.name).to eq(existing)
+        expect(found.authors.last.name).to  eq(new1)
       end
 
       it 'pairs book & authors via comma & space separation' do
+        existing = @author1.name; new1 = "Author 3"
+        params = {}
+        params[:title]   = "Title 3"
+        params[:year]    = 2003
+        params[:pages]   = 300
+        params[:authors] = existing + ', ' + new1
+        expect(params.count).to eq(4)
 
+        book3 = Book.make_new_book(params)
+        expect(book3)
 
+        found = Book.find(book3.id)
+        expect(found)
+        expect(found.authors.first.name).to eq(existing)
+        expect(found.authors.last.name).to  eq(new1)
       end
-
     end
-
   end
 
   describe 'Math' do
