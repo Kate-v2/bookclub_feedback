@@ -17,9 +17,9 @@ describe 'Book Index' do
     @user1 = User.create(name: "User 1")
     @user2 = User.create(name: "User 2")
 
-    @review1 = Review.create(title: "Review 1", score: 1, book_id: @book1.id, user_id: @user1.id)
-    @review2 = Review.create(title: "Review 2", score: 2, book_id: @book1.id, user_id: @user2.id)
-    @review3 = Review.create(title: "Review 3", score: 3, book_id: @book2.id, user_id: @user2.id)
+    @review1 = Review.create(title: "Review 1", score: 1, description: "Text 1", book_id: @book1.id, user_id: @user1.id)
+    @review2 = Review.create(title: "Review 2", score: 2, description: "Text 2", book_id: @book1.id, user_id: @user2.id)
+    @review3 = Review.create(title: "Review 3", score: 3, description: "Text 3", book_id: @book2.id, user_id: @user2.id)
   end
 
 
@@ -34,6 +34,7 @@ describe 'Book Index' do
     it 'Title is present' do
       visit '/books'
       card = page.all('.book').first
+      save_and_open_page
       card.should have_content("Title 1")
       card.should_not have_content("Title 2")
     end
