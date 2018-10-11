@@ -64,7 +64,7 @@ describe Book, type: :model do
     it 'can average all ratings' do
       books = Book.sort_by_average_rating
       # @book1.average_rating
-      binding.pry
+      # binding.pry
       # book = @book1.average_rating
     end
 
