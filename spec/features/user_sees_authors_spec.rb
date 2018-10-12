@@ -26,7 +26,7 @@ describe 'author index' do
     review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 5, user_id: user2.id)
     review3 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user3.id)
 
-    visit '/authors/2'
+    visit '/authors/1'
 
     expect(page).to have_content(author_1.name)
     expect(page).to have_content("Published Work: #{book.title}")
