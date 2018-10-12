@@ -2,7 +2,9 @@
   <% @author.books.each do |book| %>
     <li>Published Work: <%= book.title %></li>
              <li>Pages: <%= book.pages %> </li>
-
+    <li>Co-author(s): <% book.authors.each do |author| %></li>
+                   <span> <%= "#{author.name}, " if author.name != @author.name %> </span>
+                      <% end %>
       <li>Great Review: <%= @review.title %> </li>
       <li>Rating: <%= @review.score %> </li>
       <li>User: <%= @review.user.name %>
