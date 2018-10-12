@@ -34,6 +34,7 @@ describe 'author index' do
     expect(page).to have_content("User: #{user2.name}")
   end
 
+  # To DO - add a test that looks for card and asserts that page author is not present
   it 'shows co authors as well' do
     user1 = User.create(name: "User 1")
     user2 = User.create(name: "User 2")
