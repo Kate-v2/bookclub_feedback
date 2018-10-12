@@ -267,65 +267,89 @@ describe Book, type: :model do
       end
     end
 
-    describe 'Average Rating' do
+    describe 'Review Stats' do
 
-      it 'Ascending' do
-        book3 = Book.create(@quick_book) #doesn't need an author to instantiate
-        user3 = User.create(@quick_user)
+      before(:each) do
+        @book3 = Book.create(@quick_book) #doesn't need an author to instantiate
+        @user3 = User.create(@quick_user)
         params = @quick_review
         params[:score]   = 1
-        params[:book_id] = book3.id
-        params[:user_id] = user3.id
-        review3 = Review.create(params)
+        params[:book_id] = @book3.id
+        params[:user_id] = @user3.id
+        @review3 = Review.create(params)
 
-        books = Book.books_with_review_stats
-        first = books.first
-        last  = books.last
-        expect(first.title).to eq("Title 1")
-        expect(last.title).to  eq("Title 3")
-
-        sorted = Book.lowest_rating_first(books)
-
-        first       = sorted.first
-        first_score = first.average_score.to_f
-        last        = sorted.last
-        last_score  = last.average_score.to_f
-        expect(first.title).to eq("Title 3")
-        expect(last.title).to  eq("Title 2")
-        expect(first_score).to eq(1.0)
-        expect(last_score).to  eq(3.0)
       end
 
-      it 'Descending' do
-        book3 = Book.create(@quick_book) #doesn't need an author to instantiate
-        user3 = User.create(@quick_user)
-        params = @quick_review
-        params[:score]   = 1
-        params[:book_id] = book3.id
-        params[:user_id] = user3.id
-        review3 = Review.create(params)
 
-        books = Book.books_with_review_stats
-        first = books.first
-        first_score  = first.average_score.to_f
-        last  = books.last
-        last_score = last.average_score.to_f
-        expect(first.title).to eq("Title 1")
-        expect(first_score).to eq(1.5)
-        expect(last.title).to  eq("Title 3")
-        expect(last_score).to  eq(1)
+      describe 'Average Rating' do
 
-        sorted = Book.highest_rating_first(books)
-        last       = sorted.last
-        last_score = last.average_score.to_f
-        first      = sorted.first
-        first_score  = first.average_score.to_f
-        expect(last.title).to   eq("Title 3")
-        expect(last_score).to   eq(1.0)
-        expect(first.title).to  eq("Title 2")
-        expect(first_score).to  eq(3.0)
+        it 'Ascending' do
+          # book3 = Book.create(@quick_book) #doesn't need an author to instantiate
+          # user3 = User.create(@quick_user)
+          # params = @quick_review
+          # params[:score]   = 1
+          # params[:book_id] = book3.id
+          # params[:user_id] = user3.id
+          # review3 = Review.create(params)
+
+          books = Book.books_with_review_stats
+          first = books.first
+          last  = books.last
+          expect(first.title).to eq("Title 1")
+          expect(last.title).to  eq("Title 3")
+
+          sorted = Book.lowest_rating_first(books)
+
+          first       = sorted.first
+          first_score = first.average_score.to_f
+          last        = sorted.last
+          last_score  = last.average_score.to_f
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_score).to eq(1.0)
+          expect(last_score).to  eq(3.0)
+        end
+
+        it 'Descending' do
+          book3 = Book.create(@quick_book) #doesn't need an author to instantiate
+          user3 = User.create(@quick_user)
+          params = @quick_review
+          params[:score]   = 1
+          params[:book_id] = book3.id
+          params[:user_id] = user3.id
+          review3 = Review.create(params)
+
+          books = Book.books_with_review_stats
+          first = books.first
+          first_score  = first.average_score.to_f
+          last  = books.last
+          last_score = last.average_score.to_f
+          expect(first.title).to eq("Title 1")
+          expect(first_score).to eq(1.5)
+          expect(last.title).to  eq("Title 3")
+          expect(last_score).to  eq(1)
+
+          sorted = Book.highest_rating_first(books)
+          last       = sorted.last
+          last_score = last.average_score.to_f
+          first      = sorted.first
+          first_score  = first.average_score.to_f
+          expect(last.title).to   eq("Title 3")
+          expect(last_score).to   eq(1.0)
+          expect(first.title).to  eq("Title 2")
+          expect(first_score).to  eq(3.0)
+        end
       end
 
+      describe 'Number of Reviews' do
+
+        it 'Ascending' do
+
+
+
+        end
+
+      end
 
     end
 
