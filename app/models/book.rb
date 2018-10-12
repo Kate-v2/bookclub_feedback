@@ -47,6 +47,13 @@ class Book < ApplicationRecord
 
   # --- Math ---
 
+  # Get rid of these methods.
+  # By default, the controller should
+  # create the temp 'with ratings' table
+  # and then instead of looking at the
+  # the whole database every time to do
+  # these calculations, it can quickly
+  # just find this column of the book row
   def count_ratings
     reviews.count
   end
@@ -58,16 +65,23 @@ class Book < ApplicationRecord
 
   # --- Filtering ---
 
-  # To Do - Test Me
   def self.sort_by_title
     order(:title)
   end
 
-  # This doesn't quite work yet
-  def self.sort_by_average_rating(collection)
-    books = collection.joins(:reviews)
+  # TO DO - TEST ME specifically -- sufficiently proven via sorts though
+  def self.books_with_ratings(books = Book.all)
+    books.select('books.*, avg(reviews.score) AS average_score')
+    .joins(:reviews)
     .group(:book_id, :id)
-    .order('avg(reviews.score)')
+  end
+
+  def self.lowest_rating_first(books)
+    books.order('avg(reviews.score)')
+  end
+
+  def self.highest_rating_first(books)
+    books.order('avg(reviews.score) DESC')
   end
 
 
