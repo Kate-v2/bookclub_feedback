@@ -285,6 +285,8 @@ describe Book, type: :model do
         expect(last.title).to  eq("Title 3")
 
         sorted = Book.lowest_rating_first(books)
+        binding.pry
+
         first       = sorted.first
         first_score = first.average_score.to_f
         last        = sorted.last
