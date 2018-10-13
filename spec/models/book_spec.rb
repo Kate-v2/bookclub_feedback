@@ -401,7 +401,7 @@ describe Book, type: :model do
         expect(last_pages).to  eq(300)
       end
 
-      it 'Ascending' do
+      it 'Descending' do
         params = {sort: "high_pages"}
         first, *, last = Book.assess_params(params)
         first_pages = first.pages
