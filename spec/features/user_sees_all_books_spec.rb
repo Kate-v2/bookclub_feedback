@@ -134,27 +134,106 @@ describe 'Book Index' do
 
     it 'default sort is Ascending by Title' do
       visit '/books'
-      first, *, last = page.all('.book')
-
-
-
+      books = page.all('.book')
+      first = books.first
+      last  = books.last
+      first.should have_content("Title 1")
+      last.should  have_content("Title 3")
     end
 
     describe 'Sort Title' do
 
       it 'Ascending' do
-        visit '/books'
+        visit "/books"
+        # visit "/books?sort=a_title"
         click_link('Title: A-Z')
-
-        first, *, last = page.all('.book')
+        # open_page
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
         first.should have_content("Title 1")
         last.should  have_content("Title 3")
-
-
       end
 
+      it 'Descending' do
+        visit "/books"
+        click_link('Title: Z-A')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 1")
+      end
     end
 
+    describe 'Sort Rating' do
+
+      it 'Ascending' do
+        visit "/books"
+        click_link('Lowest Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 2")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Highest Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 2")
+        last.should  have_content("Title 3")
+      end
+    end
+
+    describe 'Sort Review Count' do
+
+      it 'Ascending' do
+        visit "/books"
+        click_link('Least Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 2")
+        last.should  have_content("Title 3")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Most Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 2")
+      end
+    end
+
+    describe 'Sort Page Count' do
+
+      it 'Ascending' do
+        visit "/books"
+        click_link('Least Pages')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 1")
+        last.should  have_content("Title 3")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Most Pages')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 1")
+      end
+    end
   end
 
 
