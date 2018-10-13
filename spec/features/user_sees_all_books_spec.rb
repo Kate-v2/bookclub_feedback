@@ -93,7 +93,7 @@ describe 'Book Index' do
 
 
 
-  describe 'User sees & can use sort dropdown' do
+  describe 'User can see & use sort dropdown' do
 
     before(:each) do
       @book3 = Book.create!(@quick_book) #doesn't need an author to instantiate
@@ -132,7 +132,7 @@ describe 'Book Index' do
       drop.should have_content("Least Pages")
     end
 
-    it 'default sort is Ascending by Title' do
+    it 'default sort - Title A-Z' do
       visit '/books'
       books = page.all('.book')
       first = books.first
@@ -293,6 +293,15 @@ describe 'Book Index' do
 
       three[2].click
       expect(page).to have_current_path "/books/2"
+    end
+
+    it 'Stats does not affect contents of book collection' do
+      visit '/books'
+      books = page.all('.book')
+      first = books.first
+      last  = books.last
+      first.should have_content("Title 1")
+      last.should  have_content("Title 3")
     end
 
 
