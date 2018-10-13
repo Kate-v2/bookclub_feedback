@@ -216,24 +216,11 @@ describe Book, type: :model do
 
   describe 'Math' do
 
-    # it 'can count all of the reviews for a book instance' do
-    #   ct = @book1.count_ratings
-    #   expect(ct).to eq(2)
-    # end
-    #
-    # it 'can average the ratings of a single book' do
-    #   av = @book1.average_rating
-    #   expected = 1.5
-    #   expect(av).to eq(expected)
-    # end
-
-    # it 'can average all ratings' do
-    #   books = Book.sort_by_average_rating
-    #   # @book1.average_rating
-    #   # binding.pry
-    #   # book = @book1.average_rating
-    # end
-
+    it 'should make a temporary table with average rating and count of reviews' do
+      book = Book.books_with_review_stats.first
+      expect(book.average_score)
+      expect(book.review_count)
+    end
   end
 
   describe 'Sorting' do

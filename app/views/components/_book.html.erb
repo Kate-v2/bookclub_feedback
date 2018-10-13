@@ -1,11 +1,14 @@
 
 <div id="books">
+
+  <%= render "components/book_sort" %>
+
   <% @books.each do |book| %>
     <span class="book" id=<%="book-#{book.id}"%>>
       <h3><%= book.title %></h3>
       <span class='review-summary'>
-        <p><%= book.average_rating %> rating from
-          <%= book.count_ratings%> reader reviews</p>
+        <p><%= book.average_score %> rating from
+          <%= book.review_count%> reader reviews</p>
       </span>
       <p><%= book.year %></p>
         <% book.authors.each.with_index do |author, index| %>

@@ -57,6 +57,7 @@ describe 'Book Index' do
       it 'multiple authors' do
         visit '/books'
         card = page.all('.book').first
+        save_and_open_page
         card.should have_content("Author 1")
         card.should have_content("Author 2")
         card.should have_content("Author 1, Author 2")

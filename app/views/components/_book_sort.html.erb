@@ -1,0 +1,63 @@
+
+<form class='sorting' id="books-sort" action='/books' method="GET">
+  <span class="sort-bar">
+
+    <span class="sort-type">
+      <!-- <div class="radio"> -->
+        <p>Title:</p>
+        <span>
+        <p>AZ</p>
+        <input type="radio" name="sort" value="a_title">
+        </span>
+        <span>
+        <p>ZA</p>
+        <input type="radio" name="sort" value="z_title">
+        </span>
+      <!-- </div> -->
+    </span>
+
+    <span class="sort-type">
+      <!-- <div class="radio"> -->
+        <p>Pages:</p>
+        <span>
+        <p>most</p>
+        <input type="radio" name="sort" value="high_pages">
+        </span>
+        <span>
+        <p>least</p>
+        <input type="radio" name="sort" value="low_pages">
+        </span>
+      <!-- </div> -->
+    </span>
+
+    <span class="sort-type">
+      <!-- <div class="radio"> -->
+        <p>Rating:</p>
+        <span>
+        <p>best</p>
+        <input type="radio" name="sort" value="high_rating">
+        </span>
+        <span>
+        <p>worst</p>
+        <input type="radio" name="sort" value="low_rating">
+        </span>
+      <!-- </div> -->
+    </span>
+
+    <span class="sort-type">
+      <!-- <div class="radio"> -->
+        <p>Number of Reviews:</p>
+        <span>
+        <p>most</p>
+        <input type="radio" name="sort" value="high_count">
+        </span>
+        <span>
+        <p>least</p>
+        <input type="radio" name="sort" value="low_count">
+        </span>
+      <!-- </div> -->
+    </span>
+
+  </span>
+  <input id="submit-books-sort" type="submit" value="submit">
+</form>
