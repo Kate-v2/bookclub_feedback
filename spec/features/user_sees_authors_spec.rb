@@ -49,7 +49,7 @@ describe 'author index' do
     review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
 
     visit '/authors/1'
-    save_and_open_page
+
     expect(page).to have_content("Co-author(s): #{author_2.name}, #{author_3.name}")
   end
 end
