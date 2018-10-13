@@ -4,9 +4,8 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.assess_params(params)
-    @top3  = @books.highest_rating_first.limit(3)
-    @low3  = @books.lowest_rating_first.limit(3)
-    # @users = @users.most_reviews_first.limit(3)
+    @top3  = @books.top_books
+    @low3  = @books.worst_books
   end
 
   def show

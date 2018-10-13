@@ -108,5 +108,16 @@ class Book < ApplicationRecord
   end
 
 
+  # --- Execptional ---
+
+  def self.top_books(qty = 3)
+    set = books_with_review_stats.reorder('average_score DESC')
+    return set
+  end
+
+  def self.worst_books(qty = 3)
+    set = books_with_review_stats.reorder('average_score')
+    return set
+  end
 
 end
