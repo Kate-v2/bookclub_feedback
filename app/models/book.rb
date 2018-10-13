@@ -10,6 +10,25 @@ class Book < ApplicationRecord
   has_many :authors, through: :book_authors
 
 
+  def self.assess_params(params)
+    books = books_with_review_stats
+    books = books.assess_sort(params[:sort]) if params[:sort]
+    books = books.alphabetically             if !params[:sort]
+    return books
+  end
+
+  def self.assess_sort(value)
+    return alphabetically          if value == "a_title"
+    return alphabetically_reverse  if value == "z_title"
+    return lowest_rating_first     if value == "low_rating"
+    return highest_rating_first    if value == "high_rating"
+    return lowest_count_first      if value == "low_count"
+    return highest_count_first     if value == "high_count"
+    return fewest_pages_first      if value == "low_pages"
+    return most_pages_first        if value == "high_pages"
+  end
+
+
   # --- Creation ---
 
   def self.make_new_book(params)
@@ -65,15 +84,19 @@ class Book < ApplicationRecord
 
   # --- Sorting ---
 
-  def self.sort_by_title
-    order(:title)
-  end
-
   # TO DO - TEST ME specifically -- sufficiently proven via sorts though
   def self.books_with_review_stats
     select('books.*, avg(reviews.score) AS average_score, count(reviews.score) AS review_count')
     .joins(:reviews)
     .group(:book_id, :id)
+  end
+
+  def self.alphabetically
+    order(:title)
+  end
+
+  def self.alphabetically_reverse
+    order(title: :DESC)
   end
 
   def self.lowest_rating_first
@@ -93,11 +116,11 @@ class Book < ApplicationRecord
   end
 
   def self.fewest_pages_first
-    order('pages')
+    order(:pages)
   end
 
   def self.most_pages_first
-    order('pages DESC')
+    order(pages: :DESC)
   end
 
 

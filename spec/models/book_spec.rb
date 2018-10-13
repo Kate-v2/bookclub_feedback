@@ -253,20 +253,46 @@ describe Book, type: :model do
       @books = Book.books_with_review_stats
     end
 
+    it 'sorts alphabetically by default if no sort method is selected' do
+      params = {}
+      first, *, last = Book.assess_params(params)
+      expect(first.title).to eq("Title 1")
+      expect(last.title).to  eq("Title 3")
+    end
+
+
     it 'has an unexpected starting order' do
       expect(@books.length).to eq(3)
+      # tables via .joins reorders results in unexpected order
       expect(@books[0].title).to eq("Title 1")
       expect(@books[1].title).to eq("Title 3")
       expect(@books[2].title).to eq("Title 2")
-      # tables via .joins reorders results in unexpected order
     end
 
     describe 'Title' do
+
       it 'Ascending' do
-        first, *, last = @books.sort_by_title
+        params = {sort: "a_title"}
+        first, *, last = Book.assess_params(params)
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
+
+        first, *, last = @books.alphabetically
         expect(first.title).to eq("Title 1")
         expect(last.title).to  eq("Title 3")
       end
+
+      it 'Descending' do
+        params = {sort: "z_title"}
+        first, *, last = Book.assess_params(params)
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
+
+        first, *, last = @books.alphabetically_reverse
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
+      end
+
     end
 
     describe 'Review Stats' do
@@ -274,11 +300,18 @@ describe Book, type: :model do
       describe 'Average Rating' do
 
         it 'Ascending' do
-          sorted = @books.lowest_rating_first
-          first, *, last = sorted
+          params = {sort: "low_rating"}
+          first, *, last = Book.assess_params(params)
           first_score = first.average_score.to_f
           last_score  =  last.average_score.to_f
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_score).to eq(1.0)
+          expect(last_score).to  eq(3.0)
 
+          first, *, last = @books.lowest_rating_first
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
           expect(first.title).to eq("Title 3")
           expect(last.title).to  eq("Title 2")
           expect(first_score).to eq(1.0)
@@ -286,11 +319,18 @@ describe Book, type: :model do
         end
 
         it 'Descending' do
-          sorted = @books.highest_rating_first
-          first, *, last = sorted
+          params = {sort: "high_rating"}
+          first, *, last = Book.assess_params(params)
           first_score = first.average_score.to_f
           last_score  =  last.average_score.to_f
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_score).to eq(3.0)
+          expect(last_score).to  eq(1.0)
 
+          first, *, last = @books.highest_rating_first
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
           expect(first.title).to eq("Title 2")
           expect(last.title).to  eq("Title 3")
           expect(first_score).to eq(3.0)
@@ -301,11 +341,18 @@ describe Book, type: :model do
       describe 'Number of Reviews' do
 
         it 'Ascending' do
-          sorted = @books.lowest_count_first
-          first, *, last = sorted
+          params = {sort: "low_count"}
+          first, *, last = Book.assess_params(params)
           first_count = first.review_count
           last_count  =  last.review_count
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_count).to eq(1)
+          expect(last_count).to  eq(3)
 
+          first, *, last = @books.lowest_count_first
+          first_count = first.review_count
+          last_count  =  last.review_count
           expect(first.title).to eq("Title 2")
           expect(last.title).to  eq("Title 3")
           expect(first_count).to eq(1)
@@ -313,11 +360,18 @@ describe Book, type: :model do
         end
 
         it 'Descending' do
-          sorted = @books.highest_count_first
-          first, *, last = sorted
+          params = {sort: "high_count"}
+          first, *, last = Book.assess_params(params)
           first_count = first.review_count
           last_count  =  last.review_count
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_count).to eq(3)
+          expect(last_count).to  eq(1)
 
+          first, *, last = @books.highest_count_first
+          first_count = first.review_count
+          last_count  =  last.review_count
           expect(first.title).to eq("Title 3")
           expect(last.title).to  eq("Title 2")
           expect(first_count).to eq(3)
@@ -329,11 +383,18 @@ describe Book, type: :model do
     describe 'Page Count' do
 
       it 'Ascending' do
-        sorted = @books.fewest_pages_first
-        first, *, last = sorted
+        params = {sort: "low_pages"}
+        first, *, last = Book.assess_params(params)
         first_pages = first.pages
         last_pages  =  last.pages
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
+        expect(first_pages).to eq(100)
+        expect(last_pages).to  eq(300)
 
+        first, *, last = @books.fewest_pages_first
+        first_pages = first.pages
+        last_pages  =  last.pages
         expect(first.title).to eq("Title 1")
         expect(last.title).to  eq("Title 3")
         expect(first_pages).to eq(100)
@@ -341,11 +402,19 @@ describe Book, type: :model do
       end
 
       it 'Ascending' do
+        params = {sort: "high_pages"}
+        first, *, last = Book.assess_params(params)
+        first_pages = first.pages
+        last_pages  =  last.pages
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
+        expect(first_pages).to eq(300)
+        expect(last_pages).to  eq(100)
+
         sorted = @books.most_pages_first
         first, *, last = sorted
         first_pages = first.pages
         last_pages  =  last.pages
-
         expect(first.title).to eq("Title 3")
         expect(last.title).to  eq("Title 1")
         expect(first_pages).to eq(300)
