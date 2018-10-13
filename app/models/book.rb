@@ -12,7 +12,7 @@ class Book < ApplicationRecord
 
   def self.assess_params(params)
     books = books_with_review_stats
-    books = books.assess_sort(params[:sort]) if params[:sort]
+    books = books.assess_sort(params[:sort]) if  params[:sort]
     books = books.alphabetically             if !params[:sort]
     return books
   end
@@ -108,5 +108,14 @@ class Book < ApplicationRecord
   end
 
 
+  # --- Execptional ---
+
+  def self.top_books(qty = 3)
+    books_with_review_stats.reorder('average_score DESC')
+  end
+
+  def self.worst_books(qty = 3)
+    books_with_review_stats.reorder('average_score')
+  end
 
 end

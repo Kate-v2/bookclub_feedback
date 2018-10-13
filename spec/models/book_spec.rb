@@ -408,10 +408,69 @@ describe Book, type: :model do
         expect(first_pages).to eq(300)
         expect(last_pages).to  eq(100)
       end
-
     end
 
+    describe 'Exceptional Books' do
 
+      it 'Best Books' do
+        params = {}
+        books = Book.assess_params(params)
+        set = books.top_books
+        ct = set.length
+        expect(ct).to eq(3)
+
+        first, *, last = set
+        first_score = first.average_score.to_f
+        last_score  =  last.average_score.to_f
+        expect(first_score).to eq(3.0)
+        expect(last_score).to  eq(1.0)
+      end
+
+      it 'Worst Books' do
+        params = {}
+        books = Book.assess_params(params)
+        set = books.worst_books
+        ct = set.length
+        expect(ct).to eq(3)
+
+        first, *, last = set
+        first_score = first.average_score.to_f
+        last_score  =  last.average_score.to_f
+        expect(first_score).to eq(1.0)
+        expect(last_score).to  eq(3.0)
+      end
+
+      describe 'Params does not affect Exceptional' do
+
+        it 'Best Books' do
+          params = {sort: "high_count"}
+          books = Book.assess_params(params)
+          set = books.top_books
+          ct = set.length
+          expect(ct).to eq(3)
+
+          first, *, last = set
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
+          expect(first_score).to eq(3.0)
+          expect(last_score).to  eq(1.0)
+        end
+
+        it 'Worst Books' do
+          params = {sort: 'low_count'}
+          books = Book.assess_params(params)
+          set = books.worst_books
+          ct = set.length
+          expect(ct).to eq(3)
+
+          first, *, last = set
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
+          expect(first_score).to eq(1.0)
+          expect(last_score).to  eq(3.0)
+        end
+      end
+    end
   end
 
 
