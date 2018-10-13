@@ -54,13 +54,13 @@ class Book < ApplicationRecord
   # the whole database every time to do
   # these calculations, it can quickly
   # just find this column of the book row
-  def count_ratings
-    reviews.count
-  end
-
-  def average_rating
-    reviews.average(:score).to_f.round(2)
-  end
+  # def count_ratings
+  #   reviews.count
+  # end
+  #
+  # def average_rating
+  #   reviews.average(:score).to_f.round(2)
+  # end
 
 
   # --- Sorting ---
@@ -71,7 +71,7 @@ class Book < ApplicationRecord
 
   # TO DO - TEST ME specifically -- sufficiently proven via sorts though
   def self.books_with_review_stats
-    select('books.*, avg(reviews.score) AS average_score, count(reviews.score) as review_count')
+    select('books.*, avg(reviews.score) AS average_score, count(reviews.score) AS review_count')
     .joins(:reviews)
     .group(:book_id, :id)
   end
@@ -92,7 +92,13 @@ class Book < ApplicationRecord
     order('review_count DESC')
   end
 
+  def self.fewest_pages_first
+    order('pages')
+  end
 
+  def self.most_pages_first
+    order('pages DESC')
+  end
 
 
 

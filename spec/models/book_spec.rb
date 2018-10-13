@@ -55,7 +55,7 @@ describe Book, type: :model do
       describe "Title" do
 
         it 'should Title-Case the title' do
-          params = @quick_book.dup
+          params = @quick_book
           params[:title]   = "the test title"
           params[:authors] = @author1.name
           expect(params.count).to eq(4)
@@ -77,7 +77,7 @@ describe Book, type: :model do
         describe 'should Title-Case the name(s)' do
 
           it 'single name' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = "single name"
             expect(params.count).to eq(4)
 
@@ -93,7 +93,7 @@ describe Book, type: :model do
 
           it 'multiple names' do
             new1 = "more than"; new2 = "one name"
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = new1 + "," + new2
             expect(params.count).to eq(4)
 
@@ -113,7 +113,7 @@ describe Book, type: :model do
         describe "Single Author" do
 
           it 'pairs with an existing author' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = @author1.name
             expect(params.count).to eq(4)
 
@@ -127,7 +127,7 @@ describe Book, type: :model do
           end
 
           it 'pairs with a new author' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = "Author 3"
             expect(params.count).to eq(4)
 
@@ -145,7 +145,7 @@ describe Book, type: :model do
         describe 'Multiple Authors' do
 
           it 'pairs with multiple existing authors' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = "#{@author1.name},#{@author2.name}"
             expect(params.count).to eq(4)
 
@@ -161,7 +161,7 @@ describe Book, type: :model do
 
           it 'pairs with multiple new authors' do
             new1 = "Author 3"; new2 = "Author 4"
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = new1 + ',' + new2
             expect(params.count).to eq(4)
 
@@ -177,7 +177,7 @@ describe Book, type: :model do
 
           it 'pairs with multiple mixed existing or new authors' do
             existing = @author1.name; new1 = "Author 3"
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = existing + ',' + new1
             expect(params.count).to eq(4)
 
@@ -194,7 +194,7 @@ describe Book, type: :model do
           describe 'CSV functionality' do
             it 'pairs book & authors via comma & space separation' do
               existing = @author1.name; new1 = "Author 3"
-              params = @quick_book.dup
+              params = @quick_book
               params[:authors] = existing + ', ' + new1
               expect(params.count).to eq(4)
 
@@ -238,55 +238,43 @@ describe Book, type: :model do
 
   describe 'Sorting' do
 
+    before(:each) do
+      @book3 = Book.create!(@quick_book) #doesn't need an author to instantiate
+      @user3 = User.create(@quick_user)
+
+      params = @quick_review
+      params[:score] = 1
+      params[:book_id] = @book3.id
+      params[:user_id] = @user3.id
+      review3 = Review.create(params)
+      review4 = Review.create(params)
+      review5 = Review.create(params)
+
+      @books = Book.books_with_review_stats
+    end
+
+    it 'has a known starting order' do
+      expect(@books.length).to eq(3)
+      expect(@books[0].title).to eq("Title 1")
+      expect(@books[1].title).to eq("Title 3")
+      expect(@books[2].title).to eq("Title 2")
+      # tables via .joins reorders results in unexpected order
+    end
+
     describe 'Title' do
-
       it 'Ascending' do
-        params = @quick_book.dup
-        params[:title]   = "A New Title"
-        params[:authors] = "Author 3"
-        expect(params.count).to eq(4)
-
-        book3 = Book.make_new_book(params)
-        expect(book3)
-
-        found = Book.find(book3.id)
-        expect(found)
-
-        expect(Book.all.count).to eq(3)
-
-        first = Book.all.first
-        last  = Book.all.last
+        first, *, last = @books.sort_by_title
         expect(first.title).to eq("Title 1")
-        expect(last.title).to  eq("A New Title")
-
-        books = Book.sort_by_title
-        first = books.first
-        last  = books.last
-        expect(first.title).to eq("A New Title")
-        expect(last.title).to  eq("Title 2")
+        expect(last.title).to  eq("Title 3")
       end
     end
 
     describe 'Review Stats' do
-
-      before(:each) do
-        book3 = Book.create(@quick_book) #doesn't need an author to instantiate
-        user3 = User.create(@quick_user)
-        params = @quick_review
-        params[:score] = 1
-        params[:book_id] = book3.id
-        params[:user_id] = user3.id
-        review3 = Review.create(params)
-        @books = Book.books_with_review_stats
-      end
-
-
       describe 'Average Rating' do
 
         it 'Ascending' do
-          first, *, last = @books
-          # tables via .joins reorders results in hard to anticipate order
-          expect(first.title).to eq("Title 1")
+          first = @books[0].title
+          expect(first).to eq("Title 1")
 
           sorted = @books.lowest_rating_first
           first, *, last = sorted
@@ -299,10 +287,9 @@ describe Book, type: :model do
           expect(last_score).to  eq(3.0)
         end
 
-        it 'Ascending' do
-          first, *, last = @books
-          # tables via .joins reorders results in hard to anticipate order
-          expect(first.title).to eq("Title 1")
+        it 'Descending' do
+          first = @books[0].title
+          expect(first).to eq("Title 1")
 
           sorted = @books.highest_rating_first
           first, *, last = sorted
@@ -319,12 +306,49 @@ describe Book, type: :model do
       describe 'Number of Reviews' do
 
         it 'Ascending' do
+          first = @books[0].title
+          expect(first).to eq("Title 1")
 
+          sorted = @books.lowest_count_first
+          first, *, last = sorted
+          first_count = first.review_count
+          last_count  =  last.review_count
 
-
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_count).to eq(1)
+          expect(last_count).to  eq(3)
         end
 
+        it 'Descending' do
+          first = @books[0].title
+          expect(first).to eq("Title 1")
+
+          sorted = @books.highest_count_first
+          first, *, last = sorted
+          first_count = first.review_count
+          last_count  =  last.review_count
+
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_count).to eq(3)
+          expect(last_count).to  eq(1)
+        end
       end
+    end
+
+    describe 'Page Count' do
+
+      it 'Ascending' do
+        books = Book.books_with_review_stats
+        expect(books.first.title).to eq("Title 1")
+
+        first, *, last = books
+
+
+
+      end
+
 
     end
 
