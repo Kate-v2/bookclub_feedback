@@ -10,6 +10,25 @@ class Book < ApplicationRecord
   has_many :authors, through: :book_authors
 
 
+  def self.assess_params(params)
+    books = books_with_review_stats
+    books = books.assess_sort(params[:sort]) if params[:sort]
+    books = books.alphabetically             if !params[:sort]
+    return books
+  end
+
+  def self.assess_sort(value)
+    return alphabetically          if value == "a_title"
+    return alphabetically_reverse  if value == "z_title"
+    return lowest_rating_first     if value == "low_rating"
+    return highest_rating_first    if value == "high_rating"
+    return lowest_count_first      if value == "low_count"
+    return highest_count_first     if value == "high_count"
+    return fewest_pages_first      if value == "low_pages"
+    return most_pages_first        if value == "high_pages"
+  end
+
+
   # --- Creation ---
 
   def self.make_new_book(params)
@@ -47,45 +66,46 @@ class Book < ApplicationRecord
 
   # --- Math ---
 
-  # Get rid of these methods.
-  # By default, the controller should
-  # create the temp 'with ratings' table
-  # and then instead of looking at the
-  # the whole database every time to do
-  # these calculations, it can quickly
-  # just find this column of the book row
-  def count_ratings
-    reviews.count
-  end
-
-  def average_rating
-    reviews.average(:score).to_f.round(2)
-  end
-
-
-  # --- Filtering ---
-
-  def self.sort_by_title
-    order(:title)
-  end
-
-  # TO DO - TEST ME specifically -- sufficiently proven via sorts though
-  def self.books_with_ratings(books = Book.all)
-    books.select('books.*, avg(reviews.score) AS average_score')
+  def self.books_with_review_stats
+    select('books.*, avg(reviews.score) AS average_score, count(reviews.score) AS review_count')
     .joins(:reviews)
     .group(:book_id, :id)
   end
 
-  def self.lowest_rating_first(books)
-    books.order('avg(reviews.score)')
+
+  # --- Sorting ---
+
+  def self.alphabetically
+    order(:title)
   end
 
-  def self.highest_rating_first(books)
-    books.order('avg(reviews.score) DESC')
+  def self.alphabetically_reverse
+    order(title: :DESC)
   end
 
+  def self.lowest_rating_first
+    order('average_score')
+  end
 
+  def self.highest_rating_first
+    order('average_score DESC')
+  end
 
+  def self.lowest_count_first
+    order('review_count')
+  end
+
+  def self.highest_count_first
+    order('review_count DESC')
+  end
+
+  def self.fewest_pages_first
+    order(:pages)
+  end
+
+  def self.most_pages_first
+    order(pages: :DESC)
+  end
 
 
 

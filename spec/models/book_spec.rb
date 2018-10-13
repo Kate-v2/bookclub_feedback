@@ -5,6 +5,7 @@ describe Book, type: :model do
 
   describe 'Validations' do
     it { should validate_presence_of :title}
+    it { should validate_uniqueness_of :title}
     it { should validate_presence_of :pages}
     it { should validate_presence_of :year}
   end
@@ -55,7 +56,7 @@ describe Book, type: :model do
       describe "Title" do
 
         it 'should Title-Case the title' do
-          params = @quick_book.dup
+          params = @quick_book
           params[:title]   = "the test title"
           params[:authors] = @author1.name
           expect(params.count).to eq(4)
@@ -77,7 +78,7 @@ describe Book, type: :model do
         describe 'should Title-Case the name(s)' do
 
           it 'single name' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = "single name"
             expect(params.count).to eq(4)
 
@@ -93,7 +94,7 @@ describe Book, type: :model do
 
           it 'multiple names' do
             new1 = "more than"; new2 = "one name"
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = new1 + "," + new2
             expect(params.count).to eq(4)
 
@@ -113,7 +114,7 @@ describe Book, type: :model do
         describe "Single Author" do
 
           it 'pairs with an existing author' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = @author1.name
             expect(params.count).to eq(4)
 
@@ -127,7 +128,7 @@ describe Book, type: :model do
           end
 
           it 'pairs with a new author' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = "Author 3"
             expect(params.count).to eq(4)
 
@@ -145,7 +146,7 @@ describe Book, type: :model do
         describe 'Multiple Authors' do
 
           it 'pairs with multiple existing authors' do
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = "#{@author1.name},#{@author2.name}"
             expect(params.count).to eq(4)
 
@@ -161,7 +162,7 @@ describe Book, type: :model do
 
           it 'pairs with multiple new authors' do
             new1 = "Author 3"; new2 = "Author 4"
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = new1 + ',' + new2
             expect(params.count).to eq(4)
 
@@ -177,7 +178,7 @@ describe Book, type: :model do
 
           it 'pairs with multiple mixed existing or new authors' do
             existing = @author1.name; new1 = "Author 3"
-            params = @quick_book.dup
+            params = @quick_book
             params[:authors] = existing + ',' + new1
             expect(params.count).to eq(4)
 
@@ -194,7 +195,7 @@ describe Book, type: :model do
           describe 'CSV functionality' do
             it 'pairs book & authors via comma & space separation' do
               existing = @author1.name; new1 = "Author 3"
-              params = @quick_book.dup
+              params = @quick_book
               params[:authors] = existing + ', ' + new1
               expect(params.count).to eq(4)
 
@@ -216,115 +217,197 @@ describe Book, type: :model do
 
   describe 'Math' do
 
-    # it 'can count all of the reviews for a book instance' do
-    #   ct = @book1.count_ratings
-    #   expect(ct).to eq(2)
-    # end
-    #
-    # it 'can average the ratings of a single book' do
-    #   av = @book1.average_rating
-    #   expected = 1.5
-    #   expect(av).to eq(expected)
-    # end
-
-    # it 'can average all ratings' do
-    #   books = Book.sort_by_average_rating
-    #   # @book1.average_rating
-    #   # binding.pry
-    #   # book = @book1.average_rating
-    # end
-
+    it 'should make a temporary table with average rating and count of reviews' do
+      book = Book.books_with_review_stats.first
+      expect(book.average_score)
+      expect(book.review_count)
+    end
   end
 
   describe 'Sorting' do
 
+    before(:each) do
+      @book3 = Book.create!(@quick_book) #doesn't need an author to instantiate
+      @user3 = User.create(@quick_user)
+
+      params = @quick_review
+      params[:score] = 1
+      params[:book_id] = @book3.id
+      params[:user_id] = @user3.id
+      review3 = Review.create(params)
+      review4 = Review.create(params)
+      review5 = Review.create(params)
+
+      @books = Book.books_with_review_stats
+    end
+
+    it 'sorts alphabetically by default if no sort method is selected' do
+      params = {}
+      first, *, last = Book.assess_params(params)
+      expect(first.title).to eq("Title 1")
+      expect(last.title).to  eq("Title 3")
+    end
+
+
+    it 'has an unexpected starting order' do
+      expect(@books.length).to eq(3)
+      # tables via .joins reorders results in unexpected order
+      expect(@books[0].title).to eq("Title 1")
+      expect(@books[1].title).to eq("Title 3")
+      expect(@books[2].title).to eq("Title 2")
+    end
+
     describe 'Title' do
 
       it 'Ascending' do
-        params = @quick_book.dup
-        params[:title]   = "A New Title"
-        params[:authors] = "Author 3"
-        expect(params.count).to eq(4)
-
-        book3 = Book.make_new_book(params)
-        expect(book3)
-
-        found = Book.find(book3.id)
-        expect(found)
-
-        expect(Book.all.count).to eq(3)
-
-        first = Book.all.first
-        last  = Book.all.last
-        expect(first.title).to eq("Title 1")
-        expect(last.title).to  eq("A New Title")
-
-        books = Book.sort_by_title
-        first = books.first
-        last  = books.last
-        expect(first.title).to eq("A New Title")
-        expect(last.title).to  eq("Title 2")
-      end
-    end
-
-    describe 'Average Rating' do
-
-      it 'Ascending' do
-        book3 = Book.create(@quick_book) #doesn't need an author to instantiate
-        user3 = User.create(@quick_user)
-        params = @quick_review
-        params[:score]   = 1
-        params[:book_id] = book3.id
-        params[:user_id] = user3.id
-        review3 = Review.create(params)
-
-        books = Book.books_with_ratings
-        first = books.first
-        last  = books.last
+        params = {sort: "a_title"}
+        first, *, last = Book.assess_params(params)
         expect(first.title).to eq("Title 1")
         expect(last.title).to  eq("Title 3")
 
-        sorted = Book.lowest_rating_first(books)
-        first       = sorted.first
-        first_score = first.average_score.to_f
-        last        = sorted.last
-        last_score  = last.average_score.to_f
-        expect(first.title).to eq("Title 3")
-        expect(last.title).to  eq("Title 2")
-        expect(first_score).to eq(1.0)
-        expect(last_score).to  eq(3.0)
+        first, *, last = @books.alphabetically
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
       end
 
       it 'Descending' do
-        book3 = Book.create(@quick_book) #doesn't need an author to instantiate
-        user3 = User.create(@quick_user)
-        params = @quick_review
-        params[:score]   = 1
-        params[:book_id] = book3.id
-        params[:user_id] = user3.id
-        review3 = Review.create(params)
+        params = {sort: "z_title"}
+        first, *, last = Book.assess_params(params)
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
 
-        books = Book.books_with_ratings
-        first = books.first
-        first_score  = first.average_score.to_f
-        last  = books.last
-        last_score = last.average_score.to_f
-        expect(first.title).to eq("Title 1")
-        expect(first_score).to eq(1.5)
-        expect(last.title).to  eq("Title 3")
-        expect(last_score).to  eq(1)
-
-        sorted = Book.highest_rating_first(books)
-        last       = sorted.last
-        last_score = last.average_score.to_f
-        first      = sorted.first
-        first_score  = first.average_score.to_f
-        expect(last.title).to   eq("Title 3")
-        expect(last_score).to   eq(1.0)
-        expect(first.title).to  eq("Title 2")
-        expect(first_score).to  eq(3.0)
+        first, *, last = @books.alphabetically_reverse
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
       end
 
+    end
+
+    describe 'Review Stats' do
+
+      describe 'Average Rating' do
+
+        it 'Ascending' do
+          params = {sort: "low_rating"}
+          first, *, last = Book.assess_params(params)
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_score).to eq(1.0)
+          expect(last_score).to  eq(3.0)
+
+          first, *, last = @books.lowest_rating_first
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_score).to eq(1.0)
+          expect(last_score).to  eq(3.0)
+        end
+
+        it 'Descending' do
+          params = {sort: "high_rating"}
+          first, *, last = Book.assess_params(params)
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_score).to eq(3.0)
+          expect(last_score).to  eq(1.0)
+
+          first, *, last = @books.highest_rating_first
+          first_score = first.average_score.to_f
+          last_score  =  last.average_score.to_f
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_score).to eq(3.0)
+          expect(last_score).to  eq(1.0)
+        end
+      end
+
+      describe 'Number of Reviews' do
+
+        it 'Ascending' do
+          params = {sort: "low_count"}
+          first, *, last = Book.assess_params(params)
+          first_count = first.review_count
+          last_count  =  last.review_count
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_count).to eq(1)
+          expect(last_count).to  eq(3)
+
+          first, *, last = @books.lowest_count_first
+          first_count = first.review_count
+          last_count  =  last.review_count
+          expect(first.title).to eq("Title 2")
+          expect(last.title).to  eq("Title 3")
+          expect(first_count).to eq(1)
+          expect(last_count).to  eq(3)
+        end
+
+        it 'Descending' do
+          params = {sort: "high_count"}
+          first, *, last = Book.assess_params(params)
+          first_count = first.review_count
+          last_count  =  last.review_count
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_count).to eq(3)
+          expect(last_count).to  eq(1)
+
+          first, *, last = @books.highest_count_first
+          first_count = first.review_count
+          last_count  =  last.review_count
+          expect(first.title).to eq("Title 3")
+          expect(last.title).to  eq("Title 2")
+          expect(first_count).to eq(3)
+          expect(last_count).to  eq(1)
+        end
+      end
+    end
+
+    describe 'Page Count' do
+
+      it 'Ascending' do
+        params = {sort: "low_pages"}
+        first, *, last = Book.assess_params(params)
+        first_pages = first.pages
+        last_pages  =  last.pages
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
+        expect(first_pages).to eq(100)
+        expect(last_pages).to  eq(300)
+
+        first, *, last = @books.fewest_pages_first
+        first_pages = first.pages
+        last_pages  =  last.pages
+        expect(first.title).to eq("Title 1")
+        expect(last.title).to  eq("Title 3")
+        expect(first_pages).to eq(100)
+        expect(last_pages).to  eq(300)
+      end
+
+      it 'Descending' do
+        params = {sort: "high_pages"}
+        first, *, last = Book.assess_params(params)
+        first_pages = first.pages
+        last_pages  =  last.pages
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
+        expect(first_pages).to eq(300)
+        expect(last_pages).to  eq(100)
+
+        sorted = @books.most_pages_first
+        first, *, last = sorted
+        first_pages = first.pages
+        last_pages  =  last.pages
+        expect(first.title).to eq("Title 3")
+        expect(last.title).to  eq("Title 1")
+        expect(first_pages).to eq(300)
+        expect(last_pages).to  eq(100)
+      end
 
     end
 

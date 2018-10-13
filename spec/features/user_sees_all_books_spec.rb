@@ -20,8 +20,11 @@ describe 'Book Index' do
     @review1 = Review.create(title: "Review 1", score: 1, description: "Text 1", book_id: @book1.id, user_id: @user1.id)
     @review2 = Review.create(title: "Review 2", score: 2, description: "Text 2", book_id: @book1.id, user_id: @user2.id)
     @review3 = Review.create(title: "Review 3", score: 3, description: "Text 3", book_id: @book2.id, user_id: @user2.id)
-  end
 
+    @quick_book   = {title: "Title 3", year: 2003, pages: 300}
+    @quick_review = {title: "Review 4", score: 4, description: "text 4"}
+    @quick_user   = {name: "User 3"}
+  end
 
   it 'Can see all book cards' do
       visit '/books'
@@ -86,6 +89,156 @@ describe 'Book Index' do
       card2.should have_content("1 reader reviews")
       card2.should_not have_content("2 reader reviews")
     end
-
   end
+
+
+
+  describe 'User sees & can use sort dropdown' do
+
+    before(:each) do
+      @book3 = Book.create!(@quick_book) #doesn't need an author to instantiate
+      @user3 = User.create(@quick_user)
+
+      params = @quick_review
+      params[:score] = 1
+      params[:book_id] = @book3.id
+      params[:user_id] = @user3.id
+      review3 = Review.create(params)
+      review4 = Review.create(params)
+      review5 = Review.create(params)
+
+      @books = Book.books_with_review_stats
+    end
+
+    it 'can access the dropdown menu' do
+      visit '/books'
+
+      button = page.first('.sort-button')
+      button.should have_content("Sort By")
+
+      found = page.all('.sort-dropdown')
+      ct = found.count
+      expect(ct).to eq(1)
+
+      drop = found.first
+
+      drop.should have_content("Title: A-Z")
+      drop.should have_content("Title: Z-A")
+      drop.should have_content("Highest Rated")
+      drop.should have_content("Lowest Rated")
+      drop.should have_content("Most Rated")
+      drop.should have_content("Least Rated")
+      drop.should have_content("Most Pages")
+      drop.should have_content("Least Pages")
+    end
+
+    it 'default sort is Ascending by Title' do
+      visit '/books'
+      books = page.all('.book')
+      first = books.first
+      last  = books.last
+      first.should have_content("Title 1")
+      last.should  have_content("Title 3")
+    end
+
+    describe 'Sort Title' do
+
+      it 'Ascending' do
+        visit "/books"
+        # visit "/books?sort=a_title"
+        click_link('Title: A-Z')
+        # open_page
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 1")
+        last.should  have_content("Title 3")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Title: Z-A')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 1")
+      end
+    end
+
+    describe 'Sort Rating' do
+
+      it 'Ascending' do
+        visit "/books"
+        click_link('Lowest Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 2")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Highest Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 2")
+        last.should  have_content("Title 3")
+      end
+    end
+
+    describe 'Sort Review Count' do
+
+      it 'Ascending' do
+        visit "/books"
+        click_link('Least Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 2")
+        last.should  have_content("Title 3")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Most Rated')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 2")
+      end
+    end
+
+    describe 'Sort Page Count' do
+
+      it 'Ascending' do
+        visit "/books"
+        click_link('Least Pages')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 1")
+        last.should  have_content("Title 3")
+      end
+
+      it 'Descending' do
+        visit "/books"
+        click_link('Most Pages')
+        books = page.all('.book')
+        first = books.first
+        last  = books.last
+        first.should have_content("Title 3")
+        last.should  have_content("Title 1")
+      end
+    end
+  end
+
+
+end
+
+def open_page
+  save_and_open_page
 end
