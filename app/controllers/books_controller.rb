@@ -14,7 +14,11 @@ class BooksController < ApplicationController
 
 
   def new
+    # form
+  end
 
+  def create
+    # post method
   end
 
 

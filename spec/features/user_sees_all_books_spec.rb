@@ -256,9 +256,9 @@ describe 'Book Index' do
       stats = page.find('#book-stats')
       top   = stats.find('#top-books')
       three = top.all('a')
+
       ct = three.count
       expect(ct).to eq(3)
-
       three[0].should have_content('Title 2')
       three[1].should have_content('Title 1')
       three[2].should have_content('Title 3')
@@ -273,26 +273,27 @@ describe 'Book Index' do
       expect(page).to have_current_path "/books/3"
     end
 
-    # it 'Worst 3 Books as Links' do
-    #   visit "/books"
-    #   stats = page.find('#book-stats')
-    #   worst   = stats.find('#worst-books')
-    #   three = worst.all('a')
-    #   ct = three.count
-    #   expect(ct).to eq(3)
-    #   three[0].should have_content('Title 3')
-    #   three[1].should have_content('Title 2')
-    #   three[2].should have_content('Title 1')
-    #   open_page
-    #   three[0].click
-    #   expect(page).to have_current_path "/books/3"
-    #
-    #   three[1].click
-    #   expect(page).to have_current_path "/books/2"
-    #
-    #   three[2].click
-    #   expect(page).to have_current_path "/books/1"
-    # end
+    it 'Worst 3 Books as Links' do
+      visit "/books"
+      stats = page.find('#book-stats')
+      worst   = stats.find('#worst-books')
+      three = worst.all('a')
+
+      ct = three.length
+      expect(ct).to eq(3)
+      three[0].should have_content('Title 3')
+      three[1].should have_content('Title 1')
+      three[2].should have_content('Title 2')
+
+      three[0].click
+      expect(page).to have_current_path "/books/3"
+
+      three[1].click
+      expect(page).to have_current_path "/books/1"
+
+      three[2].click
+      expect(page).to have_current_path "/books/2"
+    end
 
 
   end
