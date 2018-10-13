@@ -54,13 +54,13 @@ class Book < ApplicationRecord
   # the whole database every time to do
   # these calculations, it can quickly
   # just find this column of the book row
-  # def count_ratings
-  #   reviews.count
-  # end
-  #
-  # def average_rating
-  #   reviews.average(:score).to_f.round(2)
-  # end
+  def count_ratings
+    reviews.count
+  end
+
+  def average_rating
+    reviews.average(:score).to_f.round(2)
+  end
 
 
   # --- Sorting ---
