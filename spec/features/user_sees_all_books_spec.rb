@@ -145,9 +145,7 @@ describe 'Book Index' do
 
       it 'Ascending' do
         visit "/books"
-        # visit "/books?sort=a_title"
         click_link('Title: A-Z')
-        # open_page
         books = page.all('.book')
         first = books.first
         last  = books.last
@@ -236,9 +234,56 @@ describe 'Book Index' do
     end
   end
 
+  describe 'Book Stats' do
+
+    before(:each) do
+      @book3 = Book.create!(@quick_book) #doesn't need an author to instantiate
+      @user3 = User.create(@quick_user)
+
+      params = @quick_review
+      params[:score] = 1
+      params[:book_id] = @book3.id
+      params[:user_id] = @user3.id
+      review3 = Review.create(params)
+      review4 = Review.create(params)
+      review5 = Review.create(params)
+
+      @books = Book.books_with_review_stats
+    end
+
+    it 'Top 3 Books as Links' do
+      visit "/books"
+      stats = page.find('#book-stats')
+      top   = stats.find('#top-books')
+      three = top.all('a')
+      ct = three.count
+      expect(ct).to eq(3)
+      three[0].should have_content('Title 1')
+      three[1].should have_content('Title 2')
+      three[2].should have_content('Title 3')
+
+      three[0].click
+      expect(page).to have_current_path "/books/1"
+
+      three[1].click
+      expect(page).to have_current_path "/books/2"
+
+      three[2].click
+      expect(page).to have_current_path "/books/3"
+
+
+    end
+
+
+  end
 
 end
 
 def open_page
   save_and_open_page
+end
+
+def open_pry
+  save_and_open_page
+  binding.pry
 end
