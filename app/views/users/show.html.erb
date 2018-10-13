@@ -1,0 +1,16 @@
+<h1> <%= @user.name %> </h1>
+<div class="sorting">
+   <div class="sort-dropdown">
+     <a href=<%="/users/#{params[:id]}?sort=oldest"%>>Oldest</a>
+     <a href=<%="/users/#{params[:id]}?sort=newest"%>>Newest</a>
+   </div>
+ </div>
+
+  <% @reviews.each do |review| %>
+    <span class='users'>
+      <li>Title: <%= review.title %></li>
+      <li>Description: <%= review.description %> </li>
+      <li>Score: <%= review.score %> </li>
+      <li>Date Created: <%= review.created_at %> </li>
+    </span>
+  <% end %>
