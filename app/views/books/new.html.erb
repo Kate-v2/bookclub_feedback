@@ -1,0 +1,20 @@
+
+<h1>Add a Book!</h1>
+
+<%= form_for @book do |f| %>
+
+  <%= f.label :title %>:
+  <%= f.text_field :title %><br />
+
+  <%= f.label :pages %>:
+  <%= f.text_field :pages %><br />
+
+  <%= f.label :year %>:
+  <%= f.text_field :year %><br />
+
+  <!-- How do I hide the relationship in the form -->
+  <%= f.label :authors %>:
+  <%= f.text_field :authors %><br />
+
+  <%= f.submit %>
+<% end %>

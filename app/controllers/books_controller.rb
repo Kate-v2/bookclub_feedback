@@ -14,11 +14,12 @@ class BooksController < ApplicationController
 
 
   def new
-    # form
+    @book = Book.new
   end
 
   def create
-    # post method
+    Book.make_new_book(params[:book])
+    redirect_to '/books'
   end
 
 
