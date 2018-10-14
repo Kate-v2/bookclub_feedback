@@ -27,9 +27,15 @@ describe 'Book Index' do
   end
 
   it 'Can see all book cards' do
-      visit '/books'
-      count = page.all('.book').count
-      expect(count).to eq(2)
+    visit '/books'
+    count = page.all('.book').count
+    expect(count).to eq(2)
+  end
+
+  it 'Can link to and add a new book' do
+    visit '/books'
+    click_link('New Book')
+    page.should have_current_path('/books/new')
   end
 
   describe 'Attributes within a book card' do
