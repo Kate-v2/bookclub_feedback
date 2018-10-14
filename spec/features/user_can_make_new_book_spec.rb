@@ -24,6 +24,10 @@ describe 'form' do
     click_button('Create Book')
     success = Book.all.count
     expect(success).to eq(1)
+
+    page.should have_current_path('/books')
+    skip # Books need a left outer join in the temp table to show if there are no reviews
+    page.should have_content("Title 1")
   end
 
 end
