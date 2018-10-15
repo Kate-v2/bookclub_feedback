@@ -261,12 +261,8 @@ describe Book, type: :model do
       @book3.delete_book
       authors_ct = Author.all.length
       expect(authors_ct).to eq(3)
-
     end
-
-
   end
-
 
 
   describe 'Math' do
