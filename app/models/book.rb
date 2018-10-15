@@ -67,9 +67,16 @@ class Book < ApplicationRecord
   # --- Math ---
 
   def self.books_with_review_stats
-    # We'll need to figure out how to handle NULL in our left outer join
-    select('books.*, avg(reviews.score) AS average_score, count(reviews.score) AS review_count')
-    .joins(:reviews)
+    select(
+      'books.*,
+
+      CASE WHEN count(reviews.score) = 0
+      THEN 0
+      ELSE avg(reviews.score) END AS average_score,
+
+      count(reviews.score) AS review_count'
+    )
+    .left_outer_joins(:reviews)
     .group(:book_id, :id)
   end
 

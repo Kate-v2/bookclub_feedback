@@ -40,8 +40,10 @@ describe 'form' do
     expect(success).to eq(1)
 
     page.should have_current_path('/books')
-    skip # Books need a left outer join in the temp table to show if there are no reviews
     page.should have_content("Title 1")
+    page.should have_content("0.0 rating")
+    page.should have_content("0 reader")
+
   end
 
 end
