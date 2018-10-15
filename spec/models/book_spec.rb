@@ -248,15 +248,6 @@ describe Book, type: :model do
       expect(last.title).to  eq("Title 3")
     end
 
-
-    it 'has an unexpected starting order' do
-      expect(@books.length).to eq(3)
-      # tables via .joins reorders results in unexpected order
-      expect(@books[0].title).to eq("Title 1")
-      expect(@books[1].title).to eq("Title 3")
-      expect(@books[2].title).to eq("Title 2")
-    end
-
     describe 'Title' do
 
       it 'Ascending' do

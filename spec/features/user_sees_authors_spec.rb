@@ -6,8 +6,8 @@ describe 'author index' do
     user2 = User.create(name: "User 2")
     author_1 = Author.create(name: "Author_1")
     book = author_1.books.create(title: "Title 1", pages: 100, year:2000)
-    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
-    review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
+    book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
+    book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
 
     visit '/authors/1'
 
@@ -22,9 +22,9 @@ describe 'author index' do
     user3 = User.create(name: "User 3")
     author_1 = Author.create(name: "Author_1")
     book = author_1.books.create(title: "Title 1", pages: 100, year:2000)
-    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
+    book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
+    book.reviews.create(title: "Review 3", description: "description 3", score: 4, user_id: user3.id)
     review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 5, user_id: user2.id)
-    review3 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user3.id)
 
     visit '/authors/1'
 

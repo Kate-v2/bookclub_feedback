@@ -315,5 +315,4 @@ end
 
 def open_pry
   save_and_open_page
-  binding.pry
 end
