@@ -18,8 +18,15 @@ class BooksController < ApplicationController
   end
 
   def create
-    Book.make_new_book(params[:book])
+    # Book.make_new_book(params[:book])
+    Book.make_new_book(allow_params)
     redirect_to '/books'
+  end
+
+  private
+
+  def allow_params
+    params.require(:book).permit(:title, :year, :pages, :authors)
   end
 
 
