@@ -250,6 +250,20 @@ describe Book, type: :model do
       expect(auth_ct).to eq(2)
     end
 
+    it 'can delete keep an author that has other books' do
+      book = @quick_book; book[:title] = "New Title"
+      @author3.books.create(book)
+      books_ct = @author3.books.length
+      expect(books_ct).to eq(2)
+      authors_ct = Author.all.length
+      expect(authors_ct).to eq(3)
+
+      @book3.delete_book
+      authors_ct = Author.all.length
+      expect(authors_ct).to eq(3)
+
+    end
+
 
   end
 

@@ -67,14 +67,13 @@ class Book < ApplicationRecord
   # --- Deletion ---
 
   def delete_book
-    authors = self.authors
-    reviews = self.reviews
-    remove_authors(self, authors)
-    remove_reviews(reviews)
+    remove_authors(self)
+    remove_reviews(self.reviews)
     self.destroy
   end
 
-  def remove_authors(book, authors)
+  def remove_authors(book)
+    authors = book.authors
     authors.each { |author|
       BookAuthor.where(book: book, author: author ).first.destroy
       author.destroy if author.books.count == 0
@@ -82,9 +81,7 @@ class Book < ApplicationRecord
   end
 
   def remove_reviews(reviews)
-    reviews.each { |review|
-      review.delete
-    }
+    reviews.each { |review| review.delete }
   end
 
 
