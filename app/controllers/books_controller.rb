@@ -18,7 +18,6 @@ class BooksController < ApplicationController
   end
 
   def create
-    # Book.make_new_book(params[:book])
     Book.make_new_book(allow_params)
     redirect_to '/books'
   end

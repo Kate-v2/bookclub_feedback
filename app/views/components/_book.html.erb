@@ -11,11 +11,15 @@
           <%= book.review_count%> reader reviews</p>
       </span>
       <p><%= book.year %></p>
-        <% book.authors.each.with_index do |author, index| %>
-          <span class="book-authors">
-            <%= index < book.authors.count-1 ? author.name + ", " : author.name %>
-          </span>
-        <% end %>
+      <% book.authors.each.with_index do |author, index| %>
+        <span class="book-authors">
+          <% if index < book.authors.count-1 %>
+            <a href= <%="/authors/#{author.id}"%>><%=author.name %>, </a>
+          <% else %>
+            <a href= <%="/authors/#{author.id}"%>><%=author.name %></a>
+          <% end %>
+        </span>
+      <% end %>
       </p>
       <p>Pages: <%= book.pages %></p>
     </span>
