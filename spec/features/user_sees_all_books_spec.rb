@@ -44,8 +44,6 @@ describe 'Book Index' do
     link = card.all('a').first
     link.click
     expect(page).to have_current_path("/authors/#{@author1.id}")
-
-
   end
 
 

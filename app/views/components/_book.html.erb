@@ -14,7 +14,7 @@
       <% book.authors.each.with_index do |author, index| %>
         <span class="book-authors">
           <% if index < book.authors.count-1 %>
-            <a href= <%="/authors/#{author.id}"%>><%=author.name %>, </a>
+            <a href= <%="/authors/#{author.id}"%>><%=author.name %></a>, 
           <% else %>
             <a href= <%="/authors/#{author.id}"%>><%=author.name %></a>
           <% end %>
