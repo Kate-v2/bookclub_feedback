@@ -1,11 +1,6 @@
 describe 'Reviews Create' do
   it 'user sees new review form' do
-    user1 = User.create(name: "One")
-    user2 = User.create(name: "Two")
     book = Book.create(title: "Title 1", pages: 100, year:2000)
-    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user2.id)
-    review3 = book.reviews.create(title: "Review 3", description: "description 3", score: 5, user_id: user2.id)
-    review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
 
     visit '/books'
     click_link('Leave a Review')
@@ -20,11 +15,9 @@ describe 'Reviews Create' do
   it 'can submit a form and create post a new review' do
     user2 = User.create(name: "Two")
     book = Book.create(title: "Title 1", pages: 100, year:2000)
-    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user2.id)
-    review3 = book.reviews.create(title: "Review 3", description: "description 3", score: 5, user_id: user2.id)
-    review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
 
     visit '/books'
+
     click_link('Leave a Review')
 
     fill_in('Title', with: 'Review 4')

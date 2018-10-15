@@ -10,7 +10,7 @@ class User < ApplicationRecord
       sort_by_oldest
     elsif params[:sort] == 'newest'
       sort_by_newest
-    else 
+    else
       reviews.all
     end
   end
@@ -21,5 +21,15 @@ class User < ApplicationRecord
 
   def sort_by_newest
     reviews.order("created_at DESC")
+  end
+
+  def self.users_with_reviews
+    select('users.*, count(users.id) AS review_count')
+    .joins(:reviews)
+    .group(:user_id, :id)
+  end
+
+  def self.top_reviewers
+    users_with_reviews.order('review_count DESC').limit(3)
   end
 end

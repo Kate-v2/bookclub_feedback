@@ -13,23 +13,28 @@
         <% end %>
     </span>
 
-
-    <span id='worst-books'>
-      <p>Worst Books:</p>
-      <% @low3.each do |book| %>
-        <span class='stat-triplet'>
-          <% id = book.id %>
-          <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
-        </span>
-      <% end %>
-    </span>
-
+  <span id='worst-books'>
+    <p>Worst Books:</p>
+    <% @low3.each do |book| %>
+      <span class='stat-triplet'>
+        <% id = book.id %>
+        <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
+      </span>
+    <% end %>
+  </span>
 
 
-    <span id='best-users'>
-      <p>Top Reviewers:</p>
-      <!-- No User Sort Methods Yet -->
-    </span>
+
+  <span id='best-users'>
+    <p>Top Reviewers:</p>
+    <% @top_revs.each do |reviewer| %>
+      <span class='stat_triplet'>
+        <% id = reviewer.id %>
+        <a href= <%="/users/#{id}"%>><%= reviewer.name %></a>
+      </span>
+    <% end %>
+  </span>
+
   </div>
   <a id='add-new-book' href="/books/new">New Book</a>
 
