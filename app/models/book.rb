@@ -68,7 +68,7 @@ class Book < ApplicationRecord
 
   def self.books_with_review_stats
     select('books.*, avg(reviews.score) AS average_score, count(reviews.score) AS review_count')
-    .joins(:reviews)
+    .left_outer_joins(:reviews)
     .group(:book_id, :id)
   end
 

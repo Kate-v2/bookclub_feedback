@@ -27,7 +27,12 @@
 
   <span id='best-users'>
     <p>Top Reviewers:</p>
-    <!-- No User Sort Methods Yet -->
+    <% @top_revs.each do |reviewer| %>
+      <span class='stat_triplet'>
+        <% id = reviewer.id %>
+        <a href= <%="/users/#{id}"%>><%= reviewer.name %></a>
+      </span>
+    <% end %>
   </span>
 
 
