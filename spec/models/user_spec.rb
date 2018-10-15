@@ -56,12 +56,12 @@ describe User, type: :model do
         user3 = User.create(name: "Three")
         user2 = User.create(name: "Two")
         book = Book.create(title: "Title 1", pages: 100, year:2000)
-        review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user2.id)
-        review3 = book.reviews.create(title: "Review 6", description: "description 6", score: 5, user_id: user2.id)
-        review3 = book.reviews.create(title: "Review 3", description: "description 3", score: 5, user_id: user3.id)
-        review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user3.id)
-        review2 = book.reviews.create(title: "Review 5", description: "description 5", score: 4, user_id: user3.id)
-        review2 = book.reviews.create(title: "Review 4", description: "description 4", score: 1, user_id: user1.id)
+        book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user2.id)
+        book.reviews.create(title: "Review 6", description: "description 6", score: 5, user_id: user2.id)
+        book.reviews.create(title: "Review 3", description: "description 3", score: 5, user_id: user3.id)
+        book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user3.id)
+        book.reviews.create(title: "Review 5", description: "description 5", score: 4, user_id: user3.id)
+        book.reviews.create(title: "Review 4", description: "description 4", score: 1, user_id: user1.id)
 
         top_users = User.top_reviewers
         expect(top_users).to eq [user3, user2, user1]
