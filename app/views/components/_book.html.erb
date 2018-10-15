@@ -5,23 +5,30 @@
 
   <% @books.each do |book| %>
     <span class="book" id=<%="book-#{book.id}"%>>
-      <h3><%= book.title %></h3>
+
+      <a class='book-link' href= <%="/books/#{book.id}"%>><%= book.title %></a>
+
       <span class='review-summary'>
         <p><%= book.average_score %> rating from
           <%= book.review_count%> reader reviews</p>
       </span>
+
       <p><%= book.year %></p>
+
       <% book.authors.each.with_index do |author, index| %>
         <span class="book-authors">
+
           <% if index < book.authors.count-1 %>
-            <a href= <%="/authors/#{author.id}"%>><%=author.name %></a>, 
+            <a class='author-link' href= <%="/authors/#{author.id}"%>><%=author.name %></a>,
           <% else %>
-            <a href= <%="/authors/#{author.id}"%>><%=author.name %></a>
+            <a class='author-link' href= <%="/authors/#{author.id}"%>><%=author.name %></a>
           <% end %>
+
         </span>
       <% end %>
-      </p>
+
       <p>Pages: <%= book.pages %></p>
+
     </span>
   <% end %>
 </div>
