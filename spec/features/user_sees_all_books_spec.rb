@@ -50,7 +50,6 @@ describe 'Book Index' do
     visit '/books'
     card = page.all('.book').first
     link = card.all('.book-link').first
-    save_and_open_page
     link.click
     expect(page).to have_current_path("/books/#{@book1.id}")
   end
