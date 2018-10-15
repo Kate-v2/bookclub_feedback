@@ -27,10 +27,33 @@ describe 'Book Index' do
   end
 
   it 'Can see all book cards' do
-      visit '/books'
-      count = page.all('.book').count
-      expect(count).to eq(2)
+    visit '/books'
+    count = page.all('.book').count
+    expect(count).to eq(2)
   end
+
+  it 'Can link to and add a new book' do
+    visit '/books'
+    click_link('New Book')
+    page.should have_current_path('/books/new')
+  end
+
+  it "Can link to each author's show page" do
+    visit '/books'
+    card = page.all('.book').first
+    link = card.all('.author-link').first
+    link.click
+    expect(page).to have_current_path("/authors/#{@author1.id}")
+  end
+
+  it "Can link to each book's show page" do
+    visit '/books'
+    card = page.all('.book').first
+    link = card.all('.book-link').first
+    link.click
+    expect(page).to have_current_path("/books/#{@book1.id}")
+  end
+
 
   describe 'Attributes within a book card' do
 

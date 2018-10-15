@@ -67,7 +67,15 @@ class Book < ApplicationRecord
   # --- Math ---
 
   def self.books_with_review_stats
-    select('books.*, avg(reviews.score) AS average_score, count(reviews.score) AS review_count')
+    select(
+      'books.*,
+
+      CASE WHEN count(reviews.score) = 0
+      THEN 0
+      ELSE avg(reviews.score) END AS average_score,
+
+      count(reviews.score) AS review_count'
+    )
     .left_outer_joins(:reviews)
     .group(:book_id, :id)
   end
@@ -111,11 +119,13 @@ class Book < ApplicationRecord
   # --- Execptional ---
 
   def self.top_books(qty = 3)
-    books_with_review_stats.reorder('average_score DESC')
+    # books_with_review_stats.reorder('average_score DESC')
+    reorder('average_score DESC')
   end
 
   def self.worst_books(qty = 3)
-    books_with_review_stats.reorder('average_score')
+    # books_with_review_stats.reorder('average_score')
+    reorder('average_score')
   end
 
 end
