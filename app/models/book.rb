@@ -64,6 +64,30 @@ class Book < ApplicationRecord
   end
 
 
+  # --- Deletion ---
+
+  def delete_book
+    authors = self.authors
+    reviews = self.reviews
+    remove_authors(self, authors)
+    remove_reviews(reviews)
+    self.destroy
+  end
+
+  def remove_authors(book, authors)
+    authors.each { |author|
+      BookAuthor.where(book: book, author: author ).first.destroy
+      author.destroy if author.books.count == 0
+     }
+  end
+
+  def remove_reviews(reviews)
+    reviews.each { |review|
+      review.delete
+    }
+  end
+
+
   # --- Math ---
 
   def self.books_with_review_stats
