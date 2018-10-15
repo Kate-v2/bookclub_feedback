@@ -10,7 +10,9 @@
 
       <span class='review-summary'>
         <p><%= book.average_score %> rating from
-          <%= book.review_count %> reader reviews</p>
+          <%= book.review_count%> reader reviews</p>
+        <a href=<%="/reviews/new?id=#{book.id}"%>>Leave a Review</a>
+
       </span>
 
       <p><%= book.year %></p>
