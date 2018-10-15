@@ -38,6 +38,17 @@ describe 'Book Index' do
     page.should have_current_path('/books/new')
   end
 
+  it "Can link to each author's show page" do
+    visit '/books'
+    card = page.all('.book').first
+    link = card.all('a').first
+    link.click
+    expect(page).to have_current_path("/authors/#{@author1.id}")
+
+
+  end
+
+
   describe 'Attributes within a book card' do
 
     it 'Title is present' do
