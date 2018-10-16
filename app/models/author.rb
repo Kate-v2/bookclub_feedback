@@ -27,7 +27,4 @@ class Author < ApplicationRecord
   def remaining_authors(authors, author)
     authors.find_by_author_id(author.id).destroy
   end
-
-
-
 end

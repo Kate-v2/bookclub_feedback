@@ -1,13 +1,28 @@
+
 <h1> <%= @author.name %> </h1>
-  <% @author.books.each do |book| %>
-    <li>Published Work: <a href= <%= "/books/#{book.id}" %> ><%= book.title %></li></a>
-             <li>Pages: <%= book.pages %> </li>
-    <li>Co-author(s): <% book.authors.each do |author| %></li>
-                        <% if author.name != @author.name %> </span>
-                          <span> <a href= <%= "/authors/#{author.id}" %> > <%= author.name %></a>
-                        <% end %>
-                      <% end %>
-      <li>Great Review: <%= @review.title %> </li>
-      <li>Rating: <%= @review.score %> </li>
-      <li>User: <a href= <%= "/users/#{@review.user.id}" %> ><%= @review.user.name %></a>
+
+<%= link_to 'delete author', author_path(@author), method: :delete %>
+
+<% @author.books.each do |book| %>
+  <li>Published Work:
+    <a href= <%= "/books/#{book.id}" %> ><%= book.title %></a>
+  </li>
+  <li>Pages: <%= book.pages %> </li>
+  <li>Co-author(s):
+    <% book.authors.each do |author| %>
+      <% if author.name != @author.name %>
+        <a href= <%= "/authors/#{author.id}" %> > <%= author.name %></a>
+      <% end %>
+  </li>
   <% end %>
+<% end %>
+
+<% if @review != nil %>
+  <li>Great Review: <%= @review.title %> </li>
+  <li>Rating: <%= @review.score %> </li>
+  <li>User:
+    <a href= <%= "/users/#{@review.user.id}" %> ><%= @review.user.name %></a>
+  </li>
+  <% else %>
+  <p>no reviews</p>
+<% end %>
