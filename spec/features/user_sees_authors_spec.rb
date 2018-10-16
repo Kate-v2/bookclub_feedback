@@ -50,6 +50,81 @@ describe 'author index' do
 
     visit '/authors/1'
 
-    expect(page).to have_content("Co-author(s): #{author_2.name}, #{author_3.name}")
+    expect(page).to have_content("Co-author(s): Author_2 Author_3")
+  end
+
+  it 'has user links' do
+    user1 = User.create(name: "User 1")
+    user2 = User.create(name: "User 2")
+    author_1 = Author.create(name: "Author_1")
+    author_2 = Author.create(name: "Author_2")
+    author_3 = Author.create(name: "Author_3")
+    book = Book.create(title: "Title 1", pages: 100, year:2000)
+    BookAuthor.create(book: book, author: author_1 )
+    BookAuthor.create(book: book, author: author_2 )
+    BookAuthor.create(book: book, author: author_3 )
+    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
+    review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
+
+    visit '/authors/1'
+
+    click_link 'User 2'
+
+    expect(page).to have_current_path('/users/2')
+    expect(page).to have_content('User 2')
+    expect(page).to have_content('Title: Review 2')
+    expect(page).to have_content('Description: description 2')
+    expect(page).to have_content('Score: 4')
+  end
+
+  it 'has author links' do
+    user1 = User.create(name: "User 1")
+    user2 = User.create(name: "User 2")
+    author_1 = Author.create(name: "Author_1")
+    author_2 = Author.create(name: "Author_2")
+    author_3 = Author.create(name: "Author_3")
+    book = Book.create(title: "Title 1", pages: 100, year:2000)
+    BookAuthor.create(book: book, author: author_1 )
+    BookAuthor.create(book: book, author: author_2 )
+    BookAuthor.create(book: book, author: author_3 )
+    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
+    review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
+
+    visit '/authors/1'
+
+    click_link 'Author_2'
+
+    expect(page).to have_current_path('/authors/2')
+    expect(page).to have_content('Author_2')
+    expect(page).to have_content('Published Work: Title 1')
+    expect(page).to have_content('Pages: 100')
+    expect(page).to have_content('Author_1 Author_3')
+    expect(page).to have_content('Rating: 4')
+  end
+
+  it 'has book links' do
+    user1 = User.create(name: "User 1")
+    user2 = User.create(name: "User 2")
+    author_1 = Author.create(name: "Author_1")
+    author_2 = Author.create(name: "Author_2")
+    author_3 = Author.create(name: "Author_3")
+    book = Book.create(title: "Title 1", pages: 100, year:2000)
+    BookAuthor.create(book: book, author: author_1 )
+    BookAuthor.create(book: book, author: author_2 )
+    BookAuthor.create(book: book, author: author_3 )
+    review1 = book.reviews.create(title: "Review 1", description: "description 1", score: 3, user_id: user1.id)
+    review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
+
+    visit '/authors/1'
+
+    click_link 'Title 1'
+
+    expect(page).to have_current_path('/books/1')
+    expect(page).to have_content('Title 1')
+    expect(page).to have_content('3.5 rating from 2 reader reviews')
+    expect(page).to have_content('Pages: 100')
+    expect(page).to have_content('Author_1, Author_2, Author_3')
+    expect(page).to have_content('Review: Review 2')
+    expect(page).to have_content('Review: Review 1')
   end
 end

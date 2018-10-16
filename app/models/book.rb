@@ -142,11 +142,13 @@ class Book < ApplicationRecord
   def self.top_books(qty = 3)
     # books_with_review_stats.reorder('average_score DESC')
     reorder('average_score DESC')
+    .limit(3)
   end
 
   def self.worst_books(qty = 3)
     # books_with_review_stats.reorder('average_score')
     reorder('average_score')
+    .limit(3)
   end
 
   def bottom_three_reviews
