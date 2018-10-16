@@ -80,17 +80,11 @@ describe 'user sees selected users reviews' do
     rev3 = Review.create(rev3)
 
     visit "/users/#{user.id}"
-
-    save_and_open_page
-
     reviews = page.all('.users')
     review = reviews.first
     expect(review).to have_content("Review 1")
     link = review.all('a').last
     link.click
-
-    save_and_open_page
-
     expect(page).to have_current_path("/users/#{user.id}")
     expect(page).not_to have_content("Review 1")
   end

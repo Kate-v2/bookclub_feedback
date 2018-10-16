@@ -7,6 +7,7 @@
         <a class='book-link' href= <%="/books/#{book.id}"%>><%= book.title %></a>
       <% else %>
         <h1><%= book.title %> </h1>
+        <%= link_to 'delete book', book_path(book), method: :delete %>
       <% end %>
       <span class='review-summary'>
         <p><%= book.average_score %> rating from
