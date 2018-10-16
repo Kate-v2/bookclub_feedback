@@ -10,7 +10,9 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.find(params[:id])
+    collection = Book.books_with_review_stats
+    @books = [collection.find(params[:id])]
+    @reviews = @books[0].reviews
   end
 
 

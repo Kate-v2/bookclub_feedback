@@ -28,6 +28,7 @@ describe 'Book Index' do
 
   it 'Can see all book cards' do
     visit '/books'
+    
     count = page.all('.book').count
     expect(count).to eq(2)
   end

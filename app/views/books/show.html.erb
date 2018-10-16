@@ -1,0 +1,21 @@
+<%= render "components/book" %>
+
+<h3> Top Three Reviews: </h3>
+  <% @books[0].top_three_reviews.each do |review| %>
+    <span class='top_three'>
+      <h4>Review: <%= review.title %> </h4>
+      <p>Rating: <%= review.score %> </p>
+    </span>
+  <% end %>
+
+<span class='bottome_three'>
+<h3> Bottom Three Reviews: </h3>
+  <% @books[0].bottom_three_reviews.each do |review| %>
+    <span class='bottom_three'>
+      <h4>Review: <%= review.title %> </h4>
+      <p>Rating: <%= review.score %> </p>
+    </span>
+  <% end %>
+</span>
+
+<%= render "components/review" %>

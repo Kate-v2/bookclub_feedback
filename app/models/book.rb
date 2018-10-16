@@ -149,4 +149,14 @@ class Book < ApplicationRecord
     reorder('average_score')
   end
 
+  def bottom_three_reviews
+    reviews.order('score ASC')
+    .limit(3)
+  end
+
+  def top_three_reviews
+    reviews.order('score DESC')
+    .limit(3)
+  end
+
 end

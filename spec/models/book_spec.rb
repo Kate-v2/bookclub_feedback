@@ -511,9 +511,21 @@ describe Book, type: :model do
           expect(last_score).to  eq(3.0)
         end
       end
+
+      describe 'Individual Books Reviews' do
+        it "gives a book's top three reviews" do
+          top_3 = @book1.top_three_reviews
+
+          expect(top_3.first).to eq @review2
+          expect(top_3.last).to eq @review1
+        end
+
+        it "gives a book's bottom three reviews" do
+          top_3 = @book1.bottom_three_reviews
+          expect(top_3.first).to eq @review1
+          expect(top_3.last).to eq @review2
+        end
+      end
     end
   end
-
-
-
 end

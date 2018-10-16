@@ -6,12 +6,7 @@
    </div>
  </div>
 
-  <% @reviews.each do |review| %>
-    <span class='users'>
-      <li>Title: <%= review.title %></li>
-      <li>Description: <%= review.description %> </li>
-      <li>Score: <%= review.score %> </li>
-      <li>Date Created: <%= review.created_at %> </li>
-      <%= link_to 'Delete', user_path(@user), :method => :destroy %>
-    </span>
-  <% end %>
+  <%= render "components/review" %>
+
+<!-- We need to work this into the component above -->
+<!-- < % = link_to 'Delete', user_path(@user), :method => :destroy % > -->
