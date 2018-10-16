@@ -17,6 +17,7 @@ class User < ApplicationRecord
 
 
   # --- Deletion ---
+  # I don't think we need this actually
 
   def delete_user
     delete_reviews(self)

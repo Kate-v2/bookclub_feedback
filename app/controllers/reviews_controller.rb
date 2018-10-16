@@ -10,4 +10,13 @@ class ReviewsController < ApplicationController
     Review.create(params[:review])
     redirect_to "/users/#{params[:review][:user_id]}"
   end
+
+  # KT WIP
+  def destroy
+    # binding.pry
+    @review = Review.find(params[:id])
+    @review.delete_review
+    redirect_to "/users/#{params[:review][:user_id]}"
+  end
+
 end

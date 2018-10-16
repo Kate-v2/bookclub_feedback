@@ -52,6 +52,7 @@ describe 'user sees selected users reviews' do
     review2 = book.reviews.create(title: "Review 2", description: "description 2", score: 4, user_id: user2.id)
 
     visit '/users/1'
+
     click_link('Newest')
 
     review_card1 = page.all('.users').first
@@ -60,6 +61,40 @@ describe 'user sees selected users reviews' do
     review_card1.should have_content("Score: 4")
     review_card2.should have_content("Title: Review 1")
     review_card2.should have_content("Score: 3")
+  end
+
+  it 'can delete a review from the user page' do
+
+    # KT WIP
+
+    skip
+
+    user = User.create(name: "User 1")
+    book1 = {title: "Title 1", pages: 100, year: 2001}
+    book2 = {title: "Title 2", pages: 200, year: 2002}
+    book3 = {title: "Title 3", pages: 300, year: 2003}
+    book1 = Book.create(book1)
+    book2 = Book.create(book2)
+    book3 = Book.create(book3)
+    rev1 = {title: "Review 1", description: "Text 1", score: 1, user_id: user.id, book_id: book1.id}
+    rev2 = {title: "Review 2", description: "Text 2", score: 2, user_id: user.id, book_id: book2.id}
+    rev3 = {title: "Review 3", description: "Text 3", score: 3, user_id: user.id, book_id: book3.id}
+    rev1 = Review.create(rev1)
+    rev2 = Review.create(rev2)
+    rev3 = Review.create(rev3)
+
+    visit "/users/#{user.id}"
+
+    reviews = page.all('.users')
+    review = reviews.first
+    expect(review).to have_content("Review 1")
+    link = review.all('a').last
+    link.click
+    expect(page).to have_current_path("users/#{user.id}")
+    expect(page).not_to have_content("Review 1")
+
+    save_and_open_page
+
   end
 
 end
