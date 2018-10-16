@@ -10,6 +10,37 @@ describe User, type: :model do
     it { should have_many(:reviews) }
   end
 
+  describe 'Deletion' do
+
+    it 'should delete all reviews by a user and the user' do
+      book1 = {title: "Title 1", pages: 100, year: 2001}
+      book2 = {title: "Title 2", pages: 200, year: 2002}
+      book3 = {title: "Title 3", pages: 300, year: 2003}
+      book_1 = Book.create(book1)
+      book_2 = Book.create(book2)
+      book_3 = Book.create(book3)
+
+      user = User.create!(name: "User 1")
+      rev1 = {title: "Review 1", description: "Text 1", score: 1, book_id: book_1.id, user_id: user.id}
+      rev2 = {title: "Review 2", description: "Text 2", score: 2, book_id: book_2.id, user_id: user.id}
+      rev3 = {title: "Review 3", description: "Text 3", score: 3, book_id: book_3.id, user_id: user.id}
+      user.reviews.create(rev1)
+      user.reviews.create(rev2)
+      user.reviews.create(rev3)
+
+      users = User.all.length
+      expect(users).to eq(1)
+      reviews = Review.all.length
+      expect(reviews).to eq(3)
+
+      user.delete_user
+      users = User.all.length
+      expect(users).to eq(0)
+      reviews = Review.all.length
+      expect(reviews).to eq(0)
+    end
+  end
+
   describe 'Creation' do
 
     it 'can create a user' do
