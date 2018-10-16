@@ -65,10 +65,6 @@ describe 'user sees selected users reviews' do
 
   it 'can delete a review from the user page' do
 
-    # KT WIP
-
-    skip
-
     user = User.create(name: "User 1")
     book1 = {title: "Title 1", pages: 100, year: 2001}
     book2 = {title: "Title 2", pages: 200, year: 2002}
@@ -85,16 +81,18 @@ describe 'user sees selected users reviews' do
 
     visit "/users/#{user.id}"
 
+    save_and_open_page
+
     reviews = page.all('.users')
     review = reviews.first
     expect(review).to have_content("Review 1")
     link = review.all('a').last
     link.click
-    expect(page).to have_current_path("users/#{user.id}")
-    expect(page).not_to have_content("Review 1")
 
     save_and_open_page
 
+    expect(page).to have_current_path("/users/#{user.id}")
+    expect(page).not_to have_content("Review 1")
   end
 
 end
