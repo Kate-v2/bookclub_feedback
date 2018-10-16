@@ -1,11 +1,13 @@
 <h1> <%= @author.name %> </h1>
   <% @author.books.each do |book| %>
-    <li>Published Work: <%= book.title %></li>
+    <li>Published Work: <a href= <%= "/books/#{book.id}" %> ><%= book.title %></li></a>
              <li>Pages: <%= book.pages %> </li>
     <li>Co-author(s): <% book.authors.each do |author| %></li>
-                   <span> <%= "#{author.name}, " if author.name != @author.name %> </span>
+                        <% if author.name != @author.name %> </span>
+                          <span> <a href= <%= "/authors/#{author.id}" %> > <%= author.name %></a>
+                        <% end %>
                       <% end %>
       <li>Great Review: <%= @review.title %> </li>
       <li>Rating: <%= @review.score %> </li>
-      <li>User: <%= @review.user.name %>
+      <li>User: <a href= <%= "/users/#{@review.user.id}" %> ><%= @review.user.name %></a>
   <% end %>
