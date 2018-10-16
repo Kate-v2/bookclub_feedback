@@ -215,6 +215,56 @@ describe Book, type: :model do
     end
   end
 
+  describe 'Deletion' do
+
+    before(:each) do
+      @author3 = Author.create(name: "Author 3")
+      @book3   = Book.create(@quick_book)
+      BookAuthor.create(book: @book3, author: @author3)
+      @user3   = User.create(@quick_user)
+      @user4   = User.create({name: "User 4"})
+      rev = @quick_review; rev[:user_id] = @user3.id; rev[:book_id] = @book3.id
+      Review.create(rev)
+      Review.create(rev)
+    end
+
+    it 'can delete a book and associated data that is not used other places' do
+      expect(@book3)
+      all_ct = Book.all.length
+      expect(all_ct).to eq(3)
+
+      rev_ct = Review.all.length
+      expect(rev_ct).to eq(5)
+
+      auth_ct = Author.all.length
+      expect(auth_ct).to eq(3)
+
+      @book3.delete_book
+      all_ct = Book.all.length
+      expect(all_ct).to eq(2)
+
+      rev_ct = Review.all.length
+      expect(rev_ct).to eq(3)
+
+      auth_ct = Author.all.length
+      expect(auth_ct).to eq(2)
+    end
+
+    it 'can delete keep an author that has other books' do
+      book = @quick_book; book[:title] = "New Title"
+      @author3.books.create(book)
+      books_ct = @author3.books.length
+      expect(books_ct).to eq(2)
+      authors_ct = Author.all.length
+      expect(authors_ct).to eq(3)
+
+      @book3.delete_book
+      authors_ct = Author.all.length
+      expect(authors_ct).to eq(3)
+    end
+  end
+
+
   describe 'Math' do
 
     it 'should make a temporary table with average rating and count of reviews' do

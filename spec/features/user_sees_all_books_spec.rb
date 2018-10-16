@@ -55,7 +55,6 @@ describe 'Book Index' do
     expect(page).to have_current_path("/books/#{@book1.id}")
   end
 
-
   describe 'Attributes within a book card' do
 
     it 'Title is present' do
