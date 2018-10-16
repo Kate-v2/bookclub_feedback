@@ -81,7 +81,7 @@ class Book < ApplicationRecord
   end
 
   def remove_reviews(reviews)
-    reviews.each { |review| review.delete }
+    reviews.each { |review| review.destroy }
   end
 
 
