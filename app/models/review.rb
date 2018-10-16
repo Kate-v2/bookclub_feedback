@@ -7,4 +7,10 @@ class Review < ApplicationRecord
   belongs_to :user
 
 
+  # --- Deletion ---
+
+  def delete_review
+    self.destroy
+  end
+
 end
