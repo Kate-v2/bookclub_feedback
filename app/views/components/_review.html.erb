@@ -1,10 +1,18 @@
 <% @reviews.each do |review| %>
   <span class='users'>
-    <li>Title: <%= review.title %></li>
-    <li>Description: <%= review.description %> </li>
-    <li>Score: <%= review.score %> </li>
-    <li>Date Created: <%= review.created_at %> </li>
-    <% id = review.id %>
-    <%= link_to 'delete review', review_path(review), method: :delete %>
+
+    <% user = User.find(review.user_id) %>
+    <% user_name = user.name %>
+    <%= link_to user_name, user_path(user), method: :get %>
+
+    <p>Score: <%= review.score %></p>
+    <p>Date Created: <%= review.created_at %></p>
+
+    <p>Title: <%= review.title %></p>
+    <p>" <%= review.description %> "</p>
+
+    <% if current_page?(user_path) %>
+      <%= link_to 'delete review', review_path(review), method: :delete %>
+    <% end %>
   </span>
 <% end %>

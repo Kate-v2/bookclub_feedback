@@ -74,7 +74,7 @@ describe 'author index' do
     expect(page).to have_current_path('/users/2')
     expect(page).to have_content('User 2')
     expect(page).to have_content('Title: Review 2')
-    expect(page).to have_content('Description: description 2')
+    expect(page).to have_content('description 2')
     expect(page).to have_content('Score: 4')
   end
 

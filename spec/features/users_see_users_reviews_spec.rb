@@ -18,7 +18,7 @@ describe 'user sees selected users reviews' do
 
     expect(page).to have_content("User 2")
     expect(page).to have_content("Title: #{review2.title}")
-    expect(page).to have_content("Description: #{review2.description}")
+    expect(page).to have_content("#{review2.description}")
     expect(page).to have_content("Score: #{review2.score}")
   end
 
