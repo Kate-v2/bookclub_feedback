@@ -5,6 +5,6 @@
     <li>Score: <%= review.score %> </li>
     <li>Date Created: <%= review.created_at %> </li>
     <% id = review.id %>
-    <%= link_to 'Destroy', review_path(review), method: :delete %>
+    <%= link_to 'delete review', review_path(review), method: :delete %>
   </span>
 <% end %>
