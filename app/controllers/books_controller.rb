@@ -22,7 +22,13 @@ class BooksController < ApplicationController
 
   def create
     Book.make_new_book(allow_params)
-    redirect_to '/books'
+    redirect_to books_path
+  end
+
+  def destroy
+    book = Book.find(params[:id])
+    book.delete_book
+    redirect_to books_path
   end
 
   private

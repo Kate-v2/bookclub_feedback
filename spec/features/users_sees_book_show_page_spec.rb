@@ -64,4 +64,14 @@ describe 'Book show' do
     card.should have_content("Review: Review 2")
     card.should have_content("Rating: 2")
   end
+
+  it 'can delete a book and redirect to all books' do
+    visit "/books/1"
+
+    link = page.find("a", :text => "delete book")
+    link.click
+
+    expect(page).to have_current_path( books_path )
+    expect(page).not_to have_content("Title 1")
+  end
 end
