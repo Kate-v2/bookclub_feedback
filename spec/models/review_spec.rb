@@ -16,28 +16,6 @@ describe Review, type: :model do
     it { should belong_to :user }
   end
 
-  describe 'Deletion' do
-
-    it 'can delete a review' do
-      book = {title: "Title 1", pages: 100, year: 2001}
-      book = Book.create(book)
-      user = User.create(name: "User 1")
-      rev = {title: "Review 1", description: "Text 1", score: 1, user_id: user.id, book_id: book.id }
-      review = Review.create(rev)
-      rev_ct = Review.all.length
-      expect(rev_ct).to eq(1)
-
-      review.delete_review
-      rev_ct = Review.all.length
-      expect(rev_ct).to eq(0)
-
-      ct = user.reviews.length
-      expect(ct).to eq(0)
-    end
-
-
-  end
-
   describe 'Creation' do
 
     it 'should create a review through a book' do
