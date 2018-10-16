@@ -1,13 +1,13 @@
 
 <div id="books">
 
-  <%= render "components/book_sort" %>
-
   <% @books.each do |book| %>
     <span class="book" id=<%="book-#{book.id}"%>>
-
-      <a class='book-link' href= <%="/books/#{book.id}"%>><%= book.title %></a>
-
+      <% if current_page?(action: 'index') %>
+        <a class='book-link' href= <%="/books/#{book.id}"%>><%= book.title %></a>
+      <% else %>
+        <h1><%= book.title %> </h1>
+      <% end %>
       <span class='review-summary'>
         <p><%= book.average_score %> rating from
           <%= book.review_count%> reader reviews</p>
