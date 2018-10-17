@@ -142,6 +142,27 @@ a {
 
 /* ----- REVIEWS ------ */
 
+.reviews {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+.users {
+  margin: 3%;
+  padding: 2%;
+  width: 20%;
+  color: #7ea8ea;
+  background-color: black;
+  opacity: 0.8;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 
 
 
