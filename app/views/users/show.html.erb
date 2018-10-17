@@ -1,3 +1,5 @@
+<%= render "components/header" %>
+
 <h1> <%= @user.name %> </h1>
 <div class="sorting">
    <div class="sort-dropdown">
@@ -7,6 +9,3 @@
  </div>
 
   <%= render "components/review" %>
-
-<!-- We need to work this into the component above -->
-<!-- < % = link_to 'Delete', user_path(@user), :method => :destroy % > -->

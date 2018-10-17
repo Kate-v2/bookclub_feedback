@@ -29,7 +29,7 @@ describe 'Reviews Create' do
 
     expect(page).to have_current_path('/users/1')
     expect(page).to have_content('Title: Review 4')
-    expect(page).to have_content('Description: description 4')
+    expect(page).to have_content('description 4')
     expect(page).to have_content('Score: 1')
   end
 end

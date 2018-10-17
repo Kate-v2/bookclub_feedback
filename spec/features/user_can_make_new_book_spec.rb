@@ -11,7 +11,7 @@ describe 'form' do
 
   it 'has return to all books link' do
     visit '/books/new'
-    link = page.find('.link-to-all-books')
+    link = page.find('a', text: "Home")
     link.click
     expect(page).to have_current_path('/books')
   end

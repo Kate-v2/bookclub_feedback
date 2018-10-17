@@ -12,7 +12,7 @@ describe 'author index' do
     visit '/authors/1'
 
     expect(page).to have_content(author_1.name)
-    expect(page).to have_content("Published Work: #{book.title}")
+    expect(page).to have_content("#{book.title}")
     expect(page).to have_content("Pages: #{book.pages}")
   end
 
@@ -74,7 +74,7 @@ describe 'author index' do
     expect(page).to have_current_path('/users/2')
     expect(page).to have_content('User 2')
     expect(page).to have_content('Title: Review 2')
-    expect(page).to have_content('Description: description 2')
+    expect(page).to have_content('description 2')
     expect(page).to have_content('Score: 4')
   end
 
@@ -97,7 +97,7 @@ describe 'author index' do
 
     expect(page).to have_current_path('/authors/2')
     expect(page).to have_content('Author_2')
-    expect(page).to have_content('Published Work: Title 1')
+    expect(page).to have_content('Title 1')
     expect(page).to have_content('Pages: 100')
     expect(page).to have_content('Author_1 Author_3')
     expect(page).to have_content('Rating: 4')

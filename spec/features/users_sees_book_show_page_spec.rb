@@ -38,7 +38,7 @@ describe 'Book show' do
     expect(page).to have_content("Pages: 100")
     expect(page).to have_content("Title: Review 1")
     expect(page).to have_content("Rating: 2")
-    expect(page).to have_content("Description: Text 1")
+    expect(page).to have_content("Text 1")
   end
 
   it 'display top three and bottom three reviews in order' do
