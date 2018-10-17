@@ -2,22 +2,33 @@
 
 <%= render "components/book" %>
 
-<h3> Top Three Reviews: </h3>
-  <% @books[0].top_three_reviews.each do |review| %>
-    <span class='top_three'>
-      <h4>Review: <%= review.title %> </h4>
-      <p>Rating: <%= review.score %> </p>
-    </span>
-  <% end %>
+<div id='author-stats'>
 
-<span class='bottome_three'>
-<h3> Bottom Three Reviews: </h3>
-  <% @books[0].bottom_three_reviews.each do |review| %>
-    <span class='bottom_three'>
-      <h4>Review: <%= review.title %> </h4>
-      <p>Rating: <%= review.score %> </p>
-    </span>
-  <% end %>
-</span>
+<div id='stats-triplets'>
+  <span class='doubles'>
+  <h3> Top Three Reviews: </h3>
+    <% @books[0].top_three_reviews.each do |review| %>
+      <span class='top_three'>
+        <p>Review: <%= review.title %> </p>
+        <p>Rating: <%= review.score %> </p>
+      </span>
+    <% end %>
+  </span>
+
+  <span class='doubles'>
+  <h3> Bottom Three Reviews: </h3>
+    <% @books[0].bottom_three_reviews.each do |review| %>
+      <span class='bottom_three'>
+        <p>Review: <%= review.title %> </p>
+        <p>Rating: <%= review.score %> </p>
+      </span>
+    <% end %>
+  </span>
+  </span>
+</div>
+
+
+</div>
+
 
 <%= render "components/review" %>

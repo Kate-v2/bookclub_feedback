@@ -1,43 +1,47 @@
 
 <div id='book-stats'>
 
-
-  <div>
-    <span id='top-books'>
+  <div id="stats-triplets">
+    <span class='triplet' id='top-books'>
         <p>Best Books:</p>
-        <% @top3.each do |book| %>
+        <span class='top'>
+          <% @top3.each do |book| %>
+            <span class='stat-triplet'>
+              <% id = book.id %>
+              <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
+            </span>
+          <% end %>
+        </span>
+    </span>
+
+    <span class='triplet' id='worst-books'>
+      <p>Worst Books:</p>
+      <span class='top'>
+        <% @low3.each do |book| %>
           <span class='stat-triplet'>
             <% id = book.id %>
             <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
           </span>
-        <% end %>
+      <% end %>
+      </span>
     </span>
 
-  <span id='worst-books'>
-    <p>Worst Books:</p>
-    <% @low3.each do |book| %>
-      <span class='stat-triplet'>
-        <% id = book.id %>
-        <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
+
+
+    <span class='triplet' id='best-users'>
+      <p>Top Reviewers:</p>
+      <span class='top'>
+        <% @top_revs.each do |reviewer| %>
+          <span class='stat-triplet'>
+            <% id = reviewer.id %>
+            <a href= <%="/users/#{id}"%>><%= reviewer.name %></a>
+          </span>
+        <% end %>
       </span>
-    <% end %>
-  </span>
-
-
-
-  <span id='best-users'>
-    <p>Top Reviewers:</p>
-    <% @top_revs.each do |reviewer| %>
-      <span class='stat_triplet'>
-        <% id = reviewer.id %>
-        <a href= <%="/users/#{id}"%>><%= reviewer.name %></a>
-      </span>
-    <% end %>
-  </span>
-
+    </span>
   </div>
+
+
   <a id='add-new-book' href="/books/new">New Book</a>
-
-
 
 </div>
