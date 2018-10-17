@@ -142,6 +142,53 @@ a {
 
 /* ----- REVIEWS ------ */
 
+#author-stats {
+  margin-left: 10%;
+  margin-right: 10%;
+  padding: 1%;
+  background-color: black;
+  opacity: 0.8;
+  color: white;
+  width: 80%;
+}
+
+.doubles {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.top_three {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #7ea8ea;
+}
+
+.top_three p {
+  font-size: 80%;
+  padding: 1%;
+  margin: 0%;
+}
+
+.bottom_three {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #7ea8ea
+}
+
+.bottom_three p {
+  font-size: 80%;
+  padding: 1%;
+  margin: 0%;
+}
+
+
+
 .reviews {
   display: flex;
   flex-direction: row;
@@ -163,6 +210,7 @@ a {
   justify-content: center;
   text-align: center;
 }
+
 
 
 
