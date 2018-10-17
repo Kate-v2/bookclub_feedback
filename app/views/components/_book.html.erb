@@ -7,9 +7,12 @@
       <% if current_page?(action: 'index') %>
         <a class='book-link' href= <%="/books/#{book.id}"%>><%= book.title %></a>
       <% else %>
-        <h1><%= book.title %> </h1>
+        <h2><%= book.title %> </h2>
         <%= link_to 'delete book', book_path(book), method: :delete %>
       <% end %>
+
+      <p class='year'><%= book.year %></p>
+
 
       <span class='review-summary'>
         <p><%= book.average_score.round(2) %> rating from
@@ -18,7 +21,6 @@
 
       </span>
 
-      <p><%= book.year %></p>
 
       <% book.authors.each.with_index do |author, index| %>
         <span class="book-authors">
