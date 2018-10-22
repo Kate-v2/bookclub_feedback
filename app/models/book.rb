@@ -48,9 +48,13 @@ class Book < ApplicationRecord
 
   # Can't handle mixed type CSV
   def self.assess_authors(csv)
-    case1 = ","; case2 = ", "
-    return [csv] if !csv.include?(case1)
-    csv.include?(case2) ? csv.split(case2) : csv.split(case1)
+    # case1 = ","; case2 = ", "
+    # return [csv] if !csv.include?(case1)
+    # csv.include?(case2) ? csv.split(case2) : csv.split(case1)
+    return [csv] if !csv.include?(',')
+    # csv.split(',').chomp(' ')
+    # csv.chomp(' ').split(',')
+    csv.gsub(', ', ',').split(',')
   end
 
   def self.find_and_add_author(name, book)
