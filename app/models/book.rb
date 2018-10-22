@@ -113,9 +113,10 @@ class Book < ApplicationRecord
     )
     .left_outer_joins(:reviews)
     .group(:book_id, :id)
+
+    # .coalesce(avg(reviews.score),0)
     # How and where do I use this?
     # ...it redoes math I thought I needed in my sql fragment
-    # .coalesce(avg(reviews.score),0)
   end
 
 
