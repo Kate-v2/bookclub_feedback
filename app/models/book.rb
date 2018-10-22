@@ -19,8 +19,8 @@ class Book < ApplicationRecord
   end
 
   def self.assess_sort(value)
-    return alphabetically          if value == nil
-    return alphabetically          if value == "a_title"
+    # return alphabetically          if value == nil
+    return alphabetically          if value == "a_title" || value == nil
     return alphabetically_reverse  if value == "z_title"
     return lowest_rating_first     if value == "low_rating"
     return highest_rating_first    if value == "high_rating"
