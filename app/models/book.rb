@@ -94,6 +94,7 @@ class Book < ApplicationRecord
      }
   end
 
+  # I reuse this method in Author model when deleting an Author and their content
   def remove_reviews(reviews)
     reviews.each { |review| review.destroy }
   end
