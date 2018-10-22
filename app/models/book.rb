@@ -12,14 +12,11 @@ class Book < ApplicationRecord
 
   def self.assess_params(params)
     collection = books_with_review_stats
-    # books = collection.assess_sort(params[:sort]) if  params[:sort]
-    # books = collection.alphabetically             if !params[:sort]
     books = collection.assess_sort(params[:sort])
     return books
   end
 
   def self.assess_sort(value)
-    # return alphabetically          if value == nil
     return alphabetically          if value == "a_title" || value == nil
     return alphabetically_reverse  if value == "z_title"
     return lowest_rating_first     if value == "low_rating"
@@ -51,19 +48,7 @@ class Book < ApplicationRecord
     authors.each { |name| find_and_add_author(name, book) }
   end
 
-  # Can't handle mixed type CSV
   def self.assess_authors(csv)
-    # --- original ---
-    # case1 = ","; case2 = ", "
-    # return [csv] if !csv.include?(case1)
-    # csv.include?(case2) ? csv.split(case2) : csv.split(case1)
-    # --- attempt with chomp ---
-    # return [csv] if !csv.include?(',')
-    # csv.split(',').chomp(' ')
-    # --- attempt 2 ---
-    # return [csv] if !csv.include?(',')
-    # csv.chomp(' ').split(',')
-    # --- with gsub ----
     csv.gsub(', ', ',').split(',')   # split will [] whether ',' is present or not!
   end
 
@@ -105,19 +90,11 @@ class Book < ApplicationRecord
   def self.books_with_review_stats
     select(
       'books.*,
-
-      CASE WHEN count(reviews.score) = 0
-      THEN 0
-      ELSE avg(reviews.score) END AS average_score,
-
+      coalesce(avg(reviews.score),0) AS average_score,
       count(reviews.score) AS review_count'
     )
     .left_outer_joins(:reviews)
     .group(:book_id, :id)
-
-    # .coalesce(avg(reviews.score),0)
-    # How and where do I use this?
-    # ...it redoes math I thought I needed in my sql fragment
   end
 
 
