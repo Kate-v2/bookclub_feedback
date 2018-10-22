@@ -154,25 +154,23 @@ class Book < ApplicationRecord
   # --- Execptional ---
 
   def self.top_books(qty = 3)
-    # books_with_review_stats.reorder('average_score DESC')
     reorder('average_score DESC')
-    .limit(3)
+    .limit(qty)
   end
 
   def self.worst_books(qty = 3)
-    # books_with_review_stats.reorder('average_score')
     reorder('average_score')
-    .limit(3)
+    .limit(qty)
   end
 
-  def bottom_three_reviews
+  def bottom_three_reviews(qty = 3)
     reviews.order('score ASC')
-    .limit(3)
+    .limit(qty)
   end
 
-  def top_three_reviews
+  def top_three_reviews((qty = 3))
     reviews.order('score DESC')
-    .limit(3)
+    .limit(qty)
   end
 
 end
