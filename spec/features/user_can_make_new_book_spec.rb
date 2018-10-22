@@ -13,7 +13,7 @@ describe 'form' do
     visit new_book_path
     link = page.find('a', text: "Home")
     link.click
-    expect(page).to have_current_path('/books')
+    expect(page).to have_current_path(books_path)
   end
 
 
@@ -39,7 +39,7 @@ describe 'form' do
     success = Book.all.count
     expect(success).to eq(1)
 
-    page.should have_current_path('/books')
+    page.should have_current_path(books_path)
     page.should have_content("Title 1")
     page.should have_content("0.0 rating")
     page.should have_content("0 reader")
