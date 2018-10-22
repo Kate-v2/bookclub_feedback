@@ -11,13 +11,15 @@ class Book < ApplicationRecord
 
 
   def self.assess_params(params)
-    books = books_with_review_stats
-    books = books.assess_sort(params[:sort]) if  params[:sort]
-    books = books.alphabetically             if !params[:sort]
+    collection = books_with_review_stats
+    # books = collection.assess_sort(params[:sort]) if  params[:sort]
+    # books = collection.alphabetically             if !params[:sort]
+    books = collection.assess_sort(params[:sort])
     return books
   end
 
   def self.assess_sort(value)
+    return alphabetically          if value == nil
     return alphabetically          if value == "a_title"
     return alphabetically_reverse  if value == "z_title"
     return lowest_rating_first     if value == "low_rating"
@@ -48,13 +50,18 @@ class Book < ApplicationRecord
 
   # Can't handle mixed type CSV
   def self.assess_authors(csv)
+    # --- original ---
     # case1 = ","; case2 = ", "
     # return [csv] if !csv.include?(case1)
     # csv.include?(case2) ? csv.split(case2) : csv.split(case1)
-    return [csv] if !csv.include?(',')
+    # --- attempt with chomp ---
+    # return [csv] if !csv.include?(',')
     # csv.split(',').chomp(' ')
+    # --- attempt 2 ---
+    # return [csv] if !csv.include?(',')
     # csv.chomp(' ').split(',')
-    csv.gsub(', ', ',').split(',')
+    # --- with gsub ----
+    csv.gsub(', ', ',').split(',')   # split will [] whether ',' is present or not!
   end
 
   def self.find_and_add_author(name, book)
