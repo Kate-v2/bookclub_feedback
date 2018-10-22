@@ -3,14 +3,14 @@ require 'rails_helper'
 describe 'form' do
 
   it 'has title' do
-    visit '/books/new'
+    visit new_book_path
     title = page.all('h1')
     expect(title.count).to eq(1)
     expect(title.first).to have_content('Add a Book!')
   end
 
   it 'has return to all books link' do
-    visit '/books/new'
+    visit new_book_path
     link = page.find('a', text: "Home")
     link.click
     expect(page).to have_current_path('/books')
@@ -19,7 +19,7 @@ describe 'form' do
 
 
   it 'Fields are present and usable' do
-    visit '/books/new'
+    visit new_book_path
 
     find_field('Title').value
     fill_in('Title', with: 'Title 1')
