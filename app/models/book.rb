@@ -34,6 +34,9 @@ class Book < ApplicationRecord
   # --- Creation ---
 
   def self.make_new_book(params)
+    # This functions like strong params, but in the
+    # case where I have to make adjustments to my params,
+    # where & when do I do this logic? (titleize, authors, etc.)
     title   = params[:title].titleize
     pages   = params[:pages]
     year    = params[:year]
@@ -168,7 +171,7 @@ class Book < ApplicationRecord
     .limit(qty)
   end
 
-  def top_three_reviews((qty = 3))
+  def top_three_reviews(qty = 3)
     reviews.order('score DESC')
     .limit(qty)
   end
