@@ -27,20 +27,19 @@ describe 'Book Index' do
   end
 
   it 'Can see all book cards' do
-    visit '/books'
-    
+    visit books_path
     count = page.all('.book').count
     expect(count).to eq(2)
   end
 
   it 'Can link to and add a new book' do
-    visit '/books'
+    visit books_path
     click_link('New Book')
     page.should have_current_path('/books/new')
   end
 
   it "Can link to each author's show page" do
-    visit '/books'
+    visit books_path
     card = page.all('.book').first
     link = card.all('.author-link').first
     link.click
@@ -48,7 +47,7 @@ describe 'Book Index' do
   end
 
   it "Can link to each book's show page" do
-    visit '/books'
+    visit books_path
     card = page.all('.book').first
     link = card.all('.book-link').first
     link.click
@@ -58,14 +57,14 @@ describe 'Book Index' do
   describe 'Attributes within a book card' do
 
     it 'Title is present' do
-      visit '/books'
+      visit books_path
       card = page.all('.book').first
       card.should have_content("Title 1")
       card.should_not have_content("Title 2")
     end
 
     it 'Year is present' do
-      visit '/books'
+      visit books_path
       card = page.all('.book').first
       card.should have_content("2001")
       card.should_not have_content("2002")
@@ -74,14 +73,14 @@ describe 'Book Index' do
     describe 'Author(s) present' do
 
       it 'single author' do
-        visit '/books'
+        visit books_path
         card = page.all('.book').last
         card.should have_content("Author 1")
         card.should_not have_content("Author 2")
       end
 
       it 'multiple authors' do
-        visit '/books'
+        visit books_path
         card = page.all('.book').first
         card.should have_content("Author 1")
         card.should have_content("Author 2")
@@ -90,7 +89,7 @@ describe 'Book Index' do
     end
 
     it 'Rating is present' do
-      visit '/books'
+      visit books_path
 
       card1 = page.all('.book').first
       card1.should have_content("1.5 rating")
@@ -102,7 +101,7 @@ describe 'Book Index' do
     end
 
     it 'Review Count is present' do
-      visit '/books'
+      visit books_path
 
       card1 = page.all('.book').first
       card1.should have_content("2 reader reviews")
@@ -134,7 +133,7 @@ describe 'Book Index' do
     end
 
     it 'can access the dropdown menu' do
-      visit '/books'
+      visit books_path
 
       button = page.first('.sort-button')
       button.should have_content("Sort By")
@@ -156,7 +155,7 @@ describe 'Book Index' do
     end
 
     it 'default sort - Title A-Z' do
-      visit '/books'
+      visit books_path
       books = page.all('.book')
       first = books.first
       last  = books.last
@@ -167,7 +166,7 @@ describe 'Book Index' do
     describe 'Sort Title' do
 
       it 'Ascending' do
-        visit "/books"
+        visit books_path
         click_link('Title: A-Z')
         books = page.all('.book')
         first = books.first
@@ -177,7 +176,7 @@ describe 'Book Index' do
       end
 
       it 'Descending' do
-        visit "/books"
+        visit books_path
         click_link('Title: Z-A')
         books = page.all('.book')
         first = books.first
@@ -190,7 +189,7 @@ describe 'Book Index' do
     describe 'Sort Rating' do
 
       it 'Ascending' do
-        visit "/books"
+        visit books_path
         click_link('Lowest Rated')
         books = page.all('.book')
         first = books.first
@@ -200,7 +199,7 @@ describe 'Book Index' do
       end
 
       it 'Descending' do
-        visit "/books"
+        visit books_path
         click_link('Highest Rated')
         books = page.all('.book')
         first = books.first
@@ -213,7 +212,7 @@ describe 'Book Index' do
     describe 'Sort Review Count' do
 
       it 'Ascending' do
-        visit "/books"
+        visit books_path
         click_link('Least Rated')
         books = page.all('.book')
         first = books.first
@@ -223,7 +222,7 @@ describe 'Book Index' do
       end
 
       it 'Descending' do
-        visit "/books"
+        visit books_path
         click_link('Most Rated')
         books = page.all('.book')
         first = books.first
@@ -236,7 +235,7 @@ describe 'Book Index' do
     describe 'Sort Page Count' do
 
       it 'Ascending' do
-        visit "/books"
+        visit books_path
         click_link('Least Pages')
         books = page.all('.book')
         first = books.first
@@ -246,7 +245,7 @@ describe 'Book Index' do
       end
 
       it 'Descending' do
-        visit "/books"
+        visit books_path
         click_link('Most Pages')
         books = page.all('.book')
         first = books.first
@@ -275,7 +274,7 @@ describe 'Book Index' do
     end
 
     it 'Top 3 Books as Links' do
-      visit "/books"
+      visit books_path
       stats = page.find('#book-stats')
       top   = stats.find('#top-books')
       three = top.all('a')
@@ -297,7 +296,7 @@ describe 'Book Index' do
     end
 
     it 'Worst 3 Books as Links' do
-      visit "/books"
+      visit books_path
       stats = page.find('#book-stats')
       worst   = stats.find('#worst-books')
       three = worst.all('a')
@@ -319,7 +318,7 @@ describe 'Book Index' do
     end
 
     it 'Stats does not affect contents of book collection' do
-      visit '/books'
+      visit books_path
       books = page.all('.book')
       first = books.first
       last  = books.last

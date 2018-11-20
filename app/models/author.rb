@@ -20,6 +20,7 @@ class Author < ApplicationRecord
 
   def no_other_authors(author, book)
     author.first.destroy
+    # Method that comes from Book model
     book.remove_reviews(book.reviews)
     book.destroy
   end

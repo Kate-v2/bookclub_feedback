@@ -11,14 +11,16 @@ class Book < ApplicationRecord
 
 
   def self.assess_params(params)
-    books = books_with_review_stats
-    books = books.assess_sort(params[:sort]) if  params[:sort]
-    books = books.alphabetically             if !params[:sort]
+    collection = books_with_review_stats
+    # books = collection.assess_sort(params[:sort]) if  params[:sort]
+    # books = collection.alphabetically             if !params[:sort]
+    books = collection.assess_sort(params[:sort])
     return books
   end
 
   def self.assess_sort(value)
-    return alphabetically          if value == "a_title"
+    # return alphabetically          if value == nil
+    return alphabetically          if value == "a_title" || value == nil
     return alphabetically_reverse  if value == "z_title"
     return lowest_rating_first     if value == "low_rating"
     return highest_rating_first    if value == "high_rating"
@@ -32,6 +34,9 @@ class Book < ApplicationRecord
   # --- Creation ---
 
   def self.make_new_book(params)
+    # This functions like strong params, but in the
+    # case where I have to make adjustments to my params,
+    # where & when do I do this logic? (titleize, authors, etc.)
     title   = params[:title].titleize
     pages   = params[:pages]
     year    = params[:year]
@@ -48,9 +53,18 @@ class Book < ApplicationRecord
 
   # Can't handle mixed type CSV
   def self.assess_authors(csv)
-    case1 = ","; case2 = ", "
-    return [csv] if !csv.include?(case1)
-    csv.include?(case2) ? csv.split(case2) : csv.split(case1)
+    # --- original ---
+    # case1 = ","; case2 = ", "
+    # return [csv] if !csv.include?(case1)
+    # csv.include?(case2) ? csv.split(case2) : csv.split(case1)
+    # --- attempt with chomp ---
+    # return [csv] if !csv.include?(',')
+    # csv.split(',').chomp(' ')
+    # --- attempt 2 ---
+    # return [csv] if !csv.include?(',')
+    # csv.chomp(' ').split(',')
+    # --- with gsub ----
+    csv.gsub(', ', ',').split(',')   # split will [] whether ',' is present or not!
   end
 
   def self.find_and_add_author(name, book)
@@ -80,6 +94,7 @@ class Book < ApplicationRecord
      }
   end
 
+  # I reuse this method in Author model when deleting an Author and their content
   def remove_reviews(reviews)
     reviews.each { |review| review.destroy }
   end
@@ -99,6 +114,10 @@ class Book < ApplicationRecord
     )
     .left_outer_joins(:reviews)
     .group(:book_id, :id)
+
+    # .coalesce(avg(reviews.score),0)
+    # How and where do I use this?
+    # ...it redoes math I thought I needed in my sql fragment
   end
 
 
@@ -140,25 +159,23 @@ class Book < ApplicationRecord
   # --- Execptional ---
 
   def self.top_books(qty = 3)
-    # books_with_review_stats.reorder('average_score DESC')
     reorder('average_score DESC')
-    .limit(3)
+    .limit(qty)
   end
 
   def self.worst_books(qty = 3)
-    # books_with_review_stats.reorder('average_score')
     reorder('average_score')
-    .limit(3)
+    .limit(qty)
   end
 
-  def bottom_three_reviews
+  def bottom_three_reviews(qty = 3)
     reviews.order('score ASC')
-    .limit(3)
+    .limit(qty)
   end
 
-  def top_three_reviews
+  def top_three_reviews(qty = 3)
     reviews.order('score DESC')
-    .limit(3)
+    .limit(qty)
   end
 
 end

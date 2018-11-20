@@ -2,7 +2,7 @@ describe 'Reviews Create' do
   it 'user sees new review form' do
     book = Book.create(title: "Title 1", pages: 100, year:2000)
 
-    visit '/books'
+    visit books_path
     click_link('Leave a Review')
 
     find_field('Title').value
@@ -16,7 +16,7 @@ describe 'Reviews Create' do
     user2 = User.create(name: "Two")
     book = Book.create(title: "Title 1", pages: 100, year:2000)
 
-    visit '/books'
+    visit books_path
 
     click_link('Leave a Review')
 
