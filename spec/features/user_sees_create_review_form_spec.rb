@@ -13,6 +13,7 @@ describe 'Reviews Create' do
   end
 
   it 'can submit a form and create post a new review' do
+    # user2 = User.create(name: "Two", id:4)
     user2 = User.create(name: "Two")
     book = Book.create(title: "Title 1", pages: 100, year:2000)
 
