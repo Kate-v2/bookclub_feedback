@@ -7,8 +7,7 @@
         <span class='top'>
           <% @top3.each do |book| %>
             <span class='stat-triplet'>
-              <% id = book.id %>
-              <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
+              <%= link_to "#{book.title}", book_path(book), method: :get %>
             </span>
           <% end %>
         </span>
@@ -19,8 +18,7 @@
       <span class='top'>
         <% @low3.each do |book| %>
           <span class='stat-triplet'>
-            <% id = book.id %>
-            <a href= <%= "/books/#{id}" %> ><%= book.title %></a>
+            <%= link_to "#{book.title}", book_path(book), method: :get %>
           </span>
       <% end %>
       </span>
@@ -33,8 +31,7 @@
       <span class='top'>
         <% @top_revs.each do |reviewer| %>
           <span class='stat-triplet'>
-            <% id = reviewer.id %>
-            <a href= <%="/users/#{id}"%>><%= reviewer.name %></a>
+            <%= link_to "#{reviewer.name}", user_path(reviewer), method: :get %>
           </span>
         <% end %>
       </span>
@@ -42,6 +39,7 @@
   </div>
 
 
-  <a id='add-new-book' href="/books/new">New Book</a>
+  <!-- <a id='add-new-book' href="/books/new">New Book</a> -->
+  <%= link_to "New Book", new_book_path, id: "add-new-book" %>
 
 </div>
