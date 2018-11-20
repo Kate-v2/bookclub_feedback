@@ -10,7 +10,7 @@
       <p>Great Review: <%= @review.title %> </p>
       <p>Rating: <%= @review.score %> </p>
       <p>User:
-        <a href= <%= "/users/#{@review.user.id}" %> ><%= @review.user.name %></a>
+        <%= link_to "#{@review.user.name}", user_path(@review.user), method: :get %>
       </p>
     <% else %>
       <p>no reviews</p>
@@ -23,7 +23,7 @@
     <% @author.books.each do |book| %>
 
       <span class='author-book'>
-        <a href= <%= "/books/#{book.id}" %> ><%= book.title %></a>
+        <%= link_to "#{book.title}", book_path(book), method: :get %>
         <p>Pages: <%= book.pages %> </p>
 
         <% if book.authors.length > 1 %>
@@ -32,7 +32,7 @@
 
             <% book.authors.each do |author| %>
               <% if author.name != @author.name %>
-                <a href= <%= "/authors/#{author.id}" %> > <%= author.name %></a>
+                <%= link_to "#{author.name}", author_path(author), method: :get %>
               <% end %>
             <% end %>
 
